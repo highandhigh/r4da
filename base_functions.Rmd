@@ -1,0 +1,54 @@
+
+## 基础包中的函数
+
+```{r, echo=FALSE}
+load(file = "rdata/height.RData")
+load(file = "rdata/weight.RData")
+load(file = "rdata/islocal.RData")
+load(file = "rdata/name.RData")
+load(file = "rdata/gender.RData")
+load(file = "rdata/grade.RData")
+load(file = "rdata/birthday.RData")
+
+load(file = "rdata/employee.RData")
+```
+
+### 基本数学函数
+
+四则运算：加减乘除
+
+```{r}
+height + weight
+height - weight
+height * weight
+height / weight
+```
+
+求除法的整数部分和余数
+
+```{r}
+# 除法的整数部分和余数都是定义的特殊操作符
+weight %/% 10 # 整除
+weight %% 10 # 余数
+
+# 通过除法的余数为0，判断是否为某个数值的整数倍
+weight[(weight %% 10) == 0] # 提取10的整数倍元素
+```
+
+求绝对值
+
+```{r}
+abs(-2:2) # 绝对值
+```
+
+求数值的正负符号
+
+```{r}
+sign(c(-2, -1, 0, 1, 2)) # 返回 -1, 0, 1 三种值
+```
+
+#### 初等函数
+
+### 描述统计函数
+
+### 字符处理函数

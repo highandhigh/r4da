@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>利用R语言进行数据分析</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="利用R语言进行数据分析">
+  <meta name="generator" content="bookdown 0.0.71 and GitBook 2.6.7">
+
+  <meta property="og:title" content="利用R语言进行数据分析" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://lixionghui.com/r4da/" />
+  
+  <meta property="og:description" content="利用R语言进行数据分析" />
+  <meta name="github-repo" content="lixionghui/r4da" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="利用R语言进行数据分析" />
+  
+  <meta name="twitter:description" content="利用R语言进行数据分析" />
+  
+
+<meta name="author" content="李雄辉">
+
+<meta name="date" content="2016-08-07">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="section-1.html">
+<link rel="next" href="section-3.html">
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type='text/javascript'>
+      var _vds = _vds || [];
+      window._vds = _vds;
+      (function(){
+        _vds.push(['setAccountId', 'a52f907cf5de9ce2']);
+        (function() {
+          var vds = document.createElement('script');
+          vds.type='text/javascript';
+          vds.async = true;
+          vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(vds, s);
+        })();
+      })();
+  </script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">利用R语言进行数据分析</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a></li>
+<li class="chapter" data-level="1" data-path="section-1.html"><a href="section-1.html"><i class="fa fa-check"></i><b>1</b> 基本数据结构</a><ul>
+<li class="chapter" data-level="1.1" data-path="section-1.html"><a href="section-1.html#-vector"><i class="fa fa-check"></i><b>1.1</b> 向量 vector</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="section-1.html"><a href="section-1.html#section-1.1.1"><i class="fa fa-check"></i><b>1.1.1</b> 向量的类型与长度</a></li>
+<li class="chapter" data-level="1.1.2" data-path="section-1.html"><a href="section-1.html#-sequence"><i class="fa fa-check"></i><b>1.1.2</b> 等差序列向量 sequence</a></li>
+<li class="chapter" data-level="1.1.3" data-path="section-1.html"><a href="section-1.html#-replicate"><i class="fa fa-check"></i><b>1.1.3</b> 循环重复向量 replicate</a></li>
+<li class="chapter" data-level="1.1.4" data-path="section-1.html"><a href="section-1.html#section-1.1.4"><i class="fa fa-check"></i><b>1.1.4</b> 数值向量的算术运算</a></li>
+<li class="chapter" data-level="1.1.5" data-path="section-1.html"><a href="section-1.html#section-1.1.5"><i class="fa fa-check"></i><b>1.1.5</b> 向量运算的循环补齐</a></li>
+<li class="chapter" data-level="1.1.6" data-path="section-1.html"><a href="section-1.html#section-1.1.6"><i class="fa fa-check"></i><b>1.1.6</b> 向量索引与子集筛选</a></li>
+<li class="chapter" data-level="1.1.7" data-path="section-1.html"><a href="section-1.html#-factor"><i class="fa fa-check"></i><b>1.1.7</b> 因子向量 factor</a></li>
+<li class="chapter" data-level="1.1.8" data-path="section-1.html"><a href="section-1.html#-date"><i class="fa fa-check"></i><b>1.1.8</b> 日期向量 Date</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="section-1.html"><a href="section-1.html#-matrix"><i class="fa fa-check"></i><b>1.2</b> 矩阵 matrix</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="section-1.html"><a href="section-1.html#section-1.2.1"><i class="fa fa-check"></i><b>1.2.1</b> 创建矩阵</a></li>
+<li class="chapter" data-level="1.2.2" data-path="section-1.html"><a href="section-1.html#section-1.2.2"><i class="fa fa-check"></i><b>1.2.2</b> 矩阵维度</a></li>
+<li class="chapter" data-level="1.2.3" data-path="section-1.html"><a href="section-1.html#section-1.2.3"><i class="fa fa-check"></i><b>1.2.3</b> 矩阵索引</a></li>
+<li class="chapter" data-level="1.2.4" data-path="section-1.html"><a href="section-1.html#section-1.2.4"><i class="fa fa-check"></i><b>1.2.4</b> 矩阵合并</a></li>
+<li class="chapter" data-level="1.2.5" data-path="section-1.html"><a href="section-1.html#section-1.2.5"><i class="fa fa-check"></i><b>1.2.5</b> 矩阵计算</a></li>
+<li class="chapter" data-level="1.2.6" data-path="section-1.html"><a href="section-1.html#section-1.2.6"><i class="fa fa-check"></i><b>1.2.6</b> 矩阵检验与转化</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="section-1.html"><a href="section-1.html#-array"><i class="fa fa-check"></i><b>1.3</b> 数组 array</a></li>
+<li class="chapter" data-level="1.4" data-path="section-1.html"><a href="section-1.html#-data.frame"><i class="fa fa-check"></i><b>1.4</b> 数据框 data.frame</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="section-1.html"><a href="section-1.html#section-1.4.1"><i class="fa fa-check"></i><b>1.4.1</b> 创建数据框</a></li>
+<li class="chapter" data-level="1.4.2" data-path="section-1.html"><a href="section-1.html#section-1.4.2"><i class="fa fa-check"></i><b>1.4.2</b> 数据框的属性</a></li>
+<li class="chapter" data-level="1.4.3" data-path="section-1.html"><a href="section-1.html#section-1.4.3"><i class="fa fa-check"></i><b>1.4.3</b> 数据结构与数据汇总</a></li>
+<li class="chapter" data-level="1.4.4" data-path="section-1.html"><a href="section-1.html#section-1.4.4"><i class="fa fa-check"></i><b>1.4.4</b> 访问数据框变量</a></li>
+<li class="chapter" data-level="1.4.5" data-path="section-1.html"><a href="section-1.html#section-1.4.5"><i class="fa fa-check"></i><b>1.4.5</b> 数据框的长度与类型</a></li>
+<li class="chapter" data-level="1.4.6" data-path="section-1.html"><a href="section-1.html#section-1.4.6"><i class="fa fa-check"></i><b>1.4.6</b> 数据框索引与筛选</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="section-1.html"><a href="section-1.html#-list"><i class="fa fa-check"></i><b>1.5</b> 列表 list</a><ul>
+<li class="chapter" data-level="1.5.1" data-path="section-1.html"><a href="section-1.html#section-1.5.1"><i class="fa fa-check"></i><b>1.5.1</b> 多种类型的复合数据</a></li>
+<li class="chapter" data-level="1.5.2" data-path="section-1.html"><a href="section-1.html#section-1.5.2"><i class="fa fa-check"></i><b>1.5.2</b> 非结构化的数据存储方式</a></li>
+<li class="chapter" data-level="1.5.3" data-path="section-1.html"><a href="section-1.html#section-1.5.3"><i class="fa fa-check"></i><b>1.5.3</b> 对象的集合</a></li>
+<li class="chapter" data-level="1.5.4" data-path="section-1.html"><a href="section-1.html#section-1.5.4"><i class="fa fa-check"></i><b>1.5.4</b> 列表子集筛选</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="section-1.html"><a href="section-1.html#-special-values"><i class="fa fa-check"></i><b>1.6</b> 特殊值 Special Values</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="section-1.html"><a href="section-1.html#-null"><i class="fa fa-check"></i><b>1.6.1</b> 空值 NULL</a></li>
+<li class="chapter" data-level="1.6.2" data-path="section-1.html"><a href="section-1.html#-na"><i class="fa fa-check"></i><b>1.6.2</b> 缺失值 NA</a></li>
+<li class="chapter" data-level="1.6.3" data-path="section-1.html"><a href="section-1.html#-nan"><i class="fa fa-check"></i><b>1.6.3</b> 非数值 NaN</a></li>
+<li class="chapter" data-level="1.6.4" data-path="section-1.html"><a href="section-1.html#-inf--inf"><i class="fa fa-check"></i><b>1.6.4</b> 无穷大/无穷小 Inf /-Inf</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="section-1.html"><a href="section-1.html#section-1.7"><i class="fa fa-check"></i><b>1.7</b> 数据模式、类型与对象的类辨析</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="section-1.html"><a href="section-1.html#section-1.7.1"><i class="fa fa-check"></i><b>1.7.1</b> 数据模式、类型</a></li>
+<li class="chapter" data-level="1.7.2" data-path="section-1.html"><a href="section-1.html#section-1.7.2"><i class="fa fa-check"></i><b>1.7.2</b> 对象的类</a></li>
+<li class="chapter" data-level="1.7.3" data-path="section-1.html"><a href="section-1.html#section-1.7.3"><i class="fa fa-check"></i><b>1.7.3</b> 基本数据结构的联系与区别</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="section-2.html"><a href="section-2.html"><i class="fa fa-check"></i><b>2</b> 函数式编程</a><ul>
+<li class="chapter" data-level="2.1" data-path="section-2.html"><a href="section-2.html#section-2.1"><i class="fa fa-check"></i><b>2.1</b> 基础包中的函数</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="section-2.html"><a href="section-2.html#section-2.1.1"><i class="fa fa-check"></i><b>2.1.1</b> 基本数学函数</a></li>
+<li class="chapter" data-level="2.1.2" data-path="section-2.html"><a href="section-2.html#section-2.1.2"><i class="fa fa-check"></i><b>2.1.2</b> 描述统计函数</a></li>
+<li class="chapter" data-level="2.1.3" data-path="section-2.html"><a href="section-2.html#section-2.1.3"><i class="fa fa-check"></i><b>2.1.3</b> 字符处理函数</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="section-2.html"><a href="section-2.html#section-2.2"><i class="fa fa-check"></i><b>2.2</b> 编写自定义函数</a></li>
+<li class="chapter" data-level="2.3" data-path="section-2.html"><a href="section-2.html#section-2.3"><i class="fa fa-check"></i><b>2.3</b> 扩展函数包</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="section-3.html"><a href="section-3.html"><i class="fa fa-check"></i><b>3</b> 数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="section-3.html"><a href="section-3.html#magrittr-"><i class="fa fa-check"></i><b>3.1</b> magrittr 管道操作符：流式编程</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="section-3.html"><a href="section-3.html#magrittr"><i class="fa fa-check"></i><b>3.1.1</b> magrittr介绍</a></li>
+<li class="chapter" data-level="3.1.2" data-path="section-3.html"><a href="section-3.html#section-3.1.2"><i class="fa fa-check"></i><b>3.1.2</b> 管道操作符</a></li>
+<li class="chapter" data-level="3.1.3" data-path="section-3.html"><a href="section-3.html#section-3.1.3"><i class="fa fa-check"></i><b>3.1.3</b> 运算符号的通用函数</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="section-3.html"><a href="section-3.html#dplyr-"><i class="fa fa-check"></i><b>3.2</b> dplyr 数据表处理语法</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="section-3.html"><a href="section-3.html#dplyr"><i class="fa fa-check"></i><b>3.2.1</b> dplyr介绍</a></li>
+<li class="chapter" data-level="3.2.2" data-path="section-3.html"><a href="section-3.html#-6-"><i class="fa fa-check"></i><b>3.2.2</b> 单表操作的 6 个主函数</a></li>
+<li class="chapter" data-level="3.2.3" data-path="section-3.html"><a href="section-3.html#summary-window-function"><i class="fa fa-check"></i><b>3.2.3</b> summary &amp; window function</a></li>
+<li class="chapter" data-level="3.2.4" data-path="section-3.html"><a href="section-3.html#-join--combine"><i class="fa fa-check"></i><b>3.2.4</b> 多表操作 join 和 combine</a></li>
+<li class="chapter" data-level="3.2.5" data-path="section-1.html"><a href="section-1.html#-combine"><i class="fa fa-check"></i><b>3.2.5</b> 合并 combine</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://lixionghui.com/">返回 lixionghui.com</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">利用R语言进行数据分析</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section-2" class="section level1">
+<h1><span class="header-section-number">第2章</span> 函数式编程</h1>
+
+<div id="section-2.1" class="section level2">
+<h2><span class="header-section-number">2.1</span> 基础包中的函数</h2>
+<div id="section-2.1.1" class="section level3">
+<h3><span class="header-section-number">2.1.1</span> 基本数学函数</h3>
+</div>
+<div id="section-2.1.2" class="section level3">
+<h3><span class="header-section-number">2.1.2</span> 描述统计函数</h3>
+</div>
+<div id="section-2.1.3" class="section level3">
+<h3><span class="header-section-number">2.1.3</span> 字符处理函数</h3>
+
+</div>
+</div>
+<div id="section-2.2" class="section level2">
+<h2><span class="header-section-number">2.2</span> 编写自定义函数</h2>
+
+</div>
+<div id="section-2.3" class="section level2">
+<h2><span class="header-section-number">2.3</span> 扩展函数包</h2>
+
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="section-1.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="section-3.html" class="navigation navigation-next " aria-label="Next page""><i class="fa fa-angle-right"></i></a>
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/lixionghui/r4da/edit/master/functional_programming.Rmd",
+"text": "编辑"
+},
+"download": ["r4da.pdf", "r4da.epub", "r4da.mobi"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

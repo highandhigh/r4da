@@ -1,0 +1,336 @@
+
+## 特殊值 Special Values
+
+
+```
+
+为确保所有数据都能被正确识别、计算或统计等，R语言定义了一些特殊值数据： 
+
+* NULL：空值，什么都没有
+* NA：Not Available 的缩写，更多是时候被称作 Missing value，也就是缺失值；有数据值，但具体是什么却不知道 
+* NaN：Not a Number 的缩写，表示非数值
+* Inf：positive infinity，正无穷大
+* -Inf：negative infinity，负无穷大
+
+前两者可以包含在任意类型的向量中，后三者是数值型向量。
+
+### 空值 NULL
+
+NULL 代表一个空对象，通常作为表达式的返回结果（也就是什么都不返回)，或者作为函数中未定义的参数值。
+
+as.null(x) 是转化函数，is.null(x) 是判断函数。
+
+NULL 作为向量中的值时，表示什么都没有，在打印过程中的不不会被显示，都不占用一个元素位置。
+
+
+```r
+# 只打印值 1
+print(c(1, NULL))
+#> [1] 1
+
+# 合并后长度只有 1
+length(c(1, NULL))
+#> [1] 1
+```
+
+
+### 缺失值 NA
+
+缺失值是R语言中非常重要的概念，且有专门的缺失值处理方法，这里只介绍几本的概念。
+
+缺失值 NA 与 SQL 中的 NULL 概念相似，表示应该有值，但目前缺失。
+
+NA 作为向量中的值，可以包含在任意类型中。不同与 NULL，缺失值是占位一个向量元素的。
+
+NA 作为一个独立的向量时，其类型为逻辑型。
+
+
+```r
+# NA 作为一个值会被打印出来
+print(c(1, NA))
+#> [1]  1 NA
+
+# NA 作为一个向量的元素是包含在长度中的
+length(c("test", NA))
+#> [1] 2
+
+# NA 的模式（类型）为逻辑型
+mode(NA)
+#> [1] "logical"
+```
+
+将向量中的某些值改变为NA，等价于将 NA 赋值给指定的元素。
+
+
+```r
+# 将向量中的某些值改变为NA
+test_weight <- weight
+test_weight[c(3,9)] <- NA
+print(test_weight)
+#>  [1] 73 70 NA 60 55 52 80 75 NA 54 61 62 56 53 82
+```
+
+在提取向量子集时，如果索引下标超过向量长度，则返回的结果为 NA。
+
+
+```r
+test_weight <- weight
+test_weight[c(31,99)]
+#> [1] NA NA
+print(test_weight)
+#>  [1] 73 70 68 60 55 52 80 75 78 54 61 62 56 53 82
+```
+
+在给向量赋值时，如果赋值的元素超过原本向量的长度，则中间未定义赋值的元素，其值为NA。
+
+用这种向量赋值方式，可以预先定义数据结构，或者增加向量长度。
+
+
+```r
+test_weight <- weight
+test_weight[c(30)] <- NA
+print(test_weight)
+#>  [1] 73 70 68 60 55 52 80 75 78 54 61 62 56 53 82 NA NA NA NA NA NA NA NA
+#> [24] NA NA NA NA NA NA NA
+
+test_weight <- weight
+test_weight[c(30)] <- 66
+print(test_weight)
+#>  [1] 73 70 68 60 55 52 80 75 78 54 61 62 56 53 82 NA NA NA NA NA NA NA NA
+#> [24] NA NA NA NA NA NA 66
+```
+
+
+is.na(x) 函数用来判断向量中的每个元素是否为 NA，返回长度相同的逻辑向量。
+
+结合元素子集筛选函数可以提取非缺失值的部分，或者将缺失值替换为某个值或者表达式结果。
+
+
+```r
+# 提取非缺失值子集
+test_weight <- weight
+test_weight[c(30)] <- 66
+test_weight[!is.na(test_weight)]
+#>  [1] 73 70 68 60 55 52 80 75 78 54 61 62 56 53 82 66
+
+# 将缺失值替换为非缺失值的均值
+test_weight <- weight
+test_weight[c(30)] <- 66
+test_weight[!is.na(test_weight)]
+#>  [1] 73 70 68 60 55 52 80 75 78 54 61 62 56 53 82 66
+test_weight[is.na(test_weight)] <- mean(test_weight, na.rm = TRUE)
+print(test_weight)
+#>  [1] 73.0 70.0 68.0 60.0 55.0 52.0 80.0 75.0 78.0 54.0 61.0 62.0 56.0 53.0
+#> [15] 82.0 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3 65.3
+#> [29] 65.3 66.0
+```
+
+anyNA(x) 函数用来判断对象中是否包含 NA 元素，返回一个逻辑值。
+
+
+```r
+test_weight <- weight
+test_weight[c(30)] <- 66
+# 返回是否包含缺失值
+anyNA(test_weight)
+#> [1] TRUE
+```
+
+关于缺失值的处理函数中，经常会遇一个名为 na.rm 的参数，用来选择是否排除缺失值。
+
+比如在求均值的函数 mean() 中，参数 na.rm 默认为 FALSE：如果数值型向量包含 NA，则其均值返回 NA；如果 na.rm 设置为 TRUE 则会在求均值中忽略 NA，得到数值结果的平均值。
+
+
+```r
+# 函数中是否移除缺失值
+test_weight <- weight
+test_weight[c(30)] <- 66
+mean(test_weight) # 默认 na.rm = FALSE
+#> [1] NA
+mean(test_weight, na.rm = TRUE)
+#> [1] 65.3
+```
+
+还有一个常用的缺失值处理函数 `na.omit()`，用来移除包含缺失值所在的行记录，多用在 data.frame 中。
+
+
+```r
+# 函数中是否移除缺失值
+test_employee <- employee
+test_employee$height[6] <- NA
+test_employee$weight[8] <- NA
+
+# test_employee 中第6和8行包含有NA元素，先这两行都被移除
+na.omit(test_employee) # 结果中不含任何包含 NA 元素的行
+#>          name height weight islocal gender grade   birthday
+#> 宋子启 宋子启   1.73     73    TRUE     男    中 1984-02-28
+#> 张伯仲 张伯仲   1.68     70    TRUE     男    良 1988-09-26
+#> 孟轲舆 孟轲舆   1.72     68   FALSE     男    良 1989-07-28
+#> 张伟     张伟   1.65     60    TRUE     男    中 1990-01-25
+#> 王雪梅 王雪梅   1.66     55   FALSE     女    优 1987-04-30
+#> 李元礼 李元礼   1.81     80   FALSE     男    中 1992-06-14
+#> 赵蜚廉 赵蜚廉   1.78     78   FALSE     男    中 1990-08-08
+#> 蒋欣     蒋欣   1.71     54   FALSE     女    良 1985-05-10
+#> 沈约度 沈约度   1.72     61    TRUE     男    良 1993-04-01
+#> 陈淮阳 陈淮阳   1.69     62    TRUE     男    中 1991-03-05
+#> 况天佑 况天佑   1.74     56   FALSE     男    良 1991-09-25
+#> 王珍珍 王珍珍   1.70     53    TRUE     女    中 1992-01-31
+#> 马小玲 马小玲   1.72     82    TRUE     女    优 1988-02-14
+```
+
+
+
+```r
+# 函数中是否移除缺失值
+test_weight <- weight
+test_weight[c(30)] <- 66
+mean(test_weight) # 默认 na.rm = FALSE
+#> [1] NA
+mean(test_weight, na.rm = TRUE)
+#> [1] 65.3
+```
+
+### 非数值 NaN
+
+在数值计算过程中，可能会产生无意义的值，为了使得计算不中断，在 R 中预先定义了 NaN 的特殊值，作为无效数值的表示。
+
+比如 0/0 是没有意义的；还有初等函数中自变量的值不在定义域范围内则函数结果也是无意义的，比如对数函数中自变量小于0也是没有意义的。
+
+当结果产生 NaN 时，控制台会打印一条警告信息“产生了NaNs”（不会中断运行过程，实际上是运行成功后才会显示该消息）。
+
+
+```r
+# 典型会产生 NaN 的情况
+0/0 # 分子和分母均为 0 的结果无意义
+#> [1] NaN
+log(-1) # 对数函数在定义域 > 0 的情况下才有意义
+#> Warning in log(-1): 产生了NaNs
+#> [1] NaN
+```
+
+is.nan(x) 是判断非数值的函数，返回对象中元素是否为 NaN 的等长逻辑向量。
+
+
+```r
+is.nan(c(0/0, log(-1)))
+#> Warning in log(-1): 产生了NaNs
+#> [1] TRUE TRUE
+```
+
+NaN 是一种特殊的 NA 值，可以用 is.na() 来验证。
+
+
+```r
+is.na(c(0/0, log(-1)))
+#> Warning in log(-1): 产生了NaNs
+#> [1] TRUE TRUE
+```
+
+### 无穷大/无穷小 Inf /-Inf
+
+数学中的无穷大和无穷小是一种特殊的数值，不同与 NaN，他们是有意义的数值，故而有特殊的符号表示， `Inf` 为正无穷大，`-Inf` 为负无穷小。
+
+
+```r
+# 典型的无穷大和无穷小数值
+1/0  # 分子为正，分母为 0 数值为无穷大
+#> [1] Inf
+-1/0  #分子为负，分母为 0 数值为无穷小
+#> [1] -Inf
+```
+
+Inf  是 infinite 的缩写，表示无穷尽的，无限大的。判读一个数值是否为无穷大或者无穷小，使用 `is.infinite()` 函数。
+
+
+```r
+# 1/0 和 -1/0 是 Inf  和 -Inf
+# 0/0 是 NaN
+#  1, -1 是正常数值
+is.infinite(c(1/0, -1/0, 0/0, 1, -1))
+#> [1]  TRUE  TRUE FALSE FALSE FALSE
+```
+
+相对地，判断数值有限大小的函数，就是 `is.finite()`。
+
+
+```r
+# 1/0 和 -1/0 是 Inf  和 -Inf
+# 0/0 是 NaN
+#  1, -1 是正常数值
+is.finite(c(1/0, -1/0, 0/0, 1, -1)) 
+#> [1] FALSE FALSE FALSE  TRUE  TRUE
+```
+
+Inf  和 -Inf，既不是 NaN，也不是 NA。
+
+
+```r
+# 1/0 和 -1/0 是 Inf  和 -Inf
+# 0/0 是 NaN
+#  1, -1 是正常数值
+is.nan(c(1/0, -1/0, 0/0, 1, -1)) 
+#> [1] FALSE FALSE  TRUE FALSE FALSE
+is.na(c(1/0, -1/0, 0/0, 1, -1)) 
+#> [1] FALSE FALSE  TRUE FALSE FALSE
+```
+
+既然 Inf 和 -Inf 分别是正无穷大和负无穷小，则说明两者的大小在比较的时候是不同的。
+
+
+```r
+# 无穷大的结果 大于 无穷小的结果
+(1/0) > (-1/0) 
+#> [1] TRUE
+
+# 无穷大 大于 无穷小
+Inf > -Inf
+#> [1] TRUE
+
+# 无穷大 大于 所有有限数值
+Inf > 0
+#> [1] TRUE
+
+# 一个无穷大并不会大于另一个无穷大
+(2/0) > (1/0) 
+#> [1] FALSE
+
+# 两个无穷大的大小比较结果是相等
+(2/0) == (1/0) 
+#> [1] TRUE
+
+# 无穷大与非数值比较结果为 NA
+# NaN 也是 NA
+# 任何值与 NA 比大小的结果都是 NA
+Inf > NaN
+#> [1] NA
+
+# 无穷大与 NA 比大小的结果都是 NA
+Inf > NA
+#> [1] NA
+```
+
+`is.infinite()` 函数只是判断一个数值是否为无穷尽的，至于该数值是无穷大还是无穷大，则并未给出对应的函数。
+
+可以结合 Inf 和 -Inf 的大小比较来辅助判断。
+
+
+```r
+# 自定义一个函数
+# 先判断对象 x 是否为无穷尽的数值
+#    如果是则将 x 值与 0 做比较，
+#        x > 0 为 TRUE，则 x 为无穷大
+#        x > 0 为 FALSE，则 x 为无穷小
+# 如果 x 不是无穷尽的数值，则返回结果为 NA
+is.infinite.positive <- function(x) { # 输入的形式参数为 x
+  ifelse(is.infinite(x), x > 0, NA) # 返回该表达式的结果
+}
+
+# 在函数中输入 x 的值即返回该函数的计算结果
+is.infinite.positive(1/0)
+#> [1] TRUE
+is.infinite.positive(-1/0)
+#> [1] FALSE
+is.infinite.positive(0/0)
+#> [1] NA
+```
+

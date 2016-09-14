@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+<html >
+
+<head>
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>利用R语言进行数据分析</title>
+  <meta content="text/html; charset=UTF-8" http-equiv="Content-Type">
+  <meta name="description" content="利用R语言进行数据分析">
+  <meta name="generator" content="bookdown 0.0.71 and GitBook 2.6.7">
+
+  <meta property="og:title" content="利用R语言进行数据分析" />
+  <meta property="og:type" content="book" />
+  <meta property="og:url" content="http://lixionghui.com/r4da/" />
+  
+  <meta property="og:description" content="利用R语言进行数据分析" />
+  <meta name="github-repo" content="lixionghui/r4da" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="利用R语言进行数据分析" />
+  
+  <meta name="twitter:description" content="利用R语言进行数据分析" />
+  
+
+<meta name="author" content="李雄辉">
+
+<meta name="date" content="2016-08-07">
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  TeX: { equationNumbers: { autoNumber: "AMS" } }
+});
+</script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  
+  
+<link rel="prev" href="section-2.html">
+
+
+<script src="libs/jquery-2.2.3/jquery.min.js"></script>
+<link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-bookdown.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-highlight.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-search.css" rel="stylesheet" />
+<link href="libs/gitbook-2.6.7/css/plugin-fontsettings.css" rel="stylesheet" />
+
+
+
+
+
+
+
+<script type='text/javascript'>
+      var _vds = _vds || [];
+      window._vds = _vds;
+      (function(){
+        _vds.push(['setAccountId', 'a52f907cf5de9ce2']);
+        (function() {
+          var vds = document.createElement('script');
+          vds.type='text/javascript';
+          vds.async = true;
+          vds.src = ('https:' == document.location.protocol ? 'https://' : 'http://') + 'dn-growing.qbox.me/vds.js';
+          var s = document.getElementsByTagName('script')[0];
+          s.parentNode.insertBefore(vds, s);
+        })();
+      })();
+  </script>
+
+
+<style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+</style>
+
+<link rel="stylesheet" href="style.css" type="text/css" />
+</head>
+
+<body>
+
+
+  <div class="book without-animation with-summary font-size-2 font-family-1" data-basepath=".">
+
+    <div class="book-summary">
+      <nav role="navigation">
+
+<ul class="summary">
+<li><a href="./">利用R语言进行数据分析</a></li>
+
+<li class="divider"></li>
+<li class="chapter" data-level="" data-path="index.html"><a href="index.html"><i class="fa fa-check"></i>前言</a></li>
+<li class="chapter" data-level="1" data-path="section-1.html"><a href="section-1.html"><i class="fa fa-check"></i><b>1</b> 基本数据结构</a><ul>
+<li class="chapter" data-level="1.1" data-path="section-1.html"><a href="section-1.html#-vector"><i class="fa fa-check"></i><b>1.1</b> 向量 vector</a><ul>
+<li class="chapter" data-level="1.1.1" data-path="section-1.html"><a href="section-1.html#section-1.1.1"><i class="fa fa-check"></i><b>1.1.1</b> 向量的类型与长度</a></li>
+<li class="chapter" data-level="1.1.2" data-path="section-1.html"><a href="section-1.html#-sequence"><i class="fa fa-check"></i><b>1.1.2</b> 等差序列向量 sequence</a></li>
+<li class="chapter" data-level="1.1.3" data-path="section-1.html"><a href="section-1.html#-replicate"><i class="fa fa-check"></i><b>1.1.3</b> 循环重复向量 replicate</a></li>
+<li class="chapter" data-level="1.1.4" data-path="section-1.html"><a href="section-1.html#section-1.1.4"><i class="fa fa-check"></i><b>1.1.4</b> 数值向量的算术运算</a></li>
+<li class="chapter" data-level="1.1.5" data-path="section-1.html"><a href="section-1.html#section-1.1.5"><i class="fa fa-check"></i><b>1.1.5</b> 向量运算的循环补齐</a></li>
+<li class="chapter" data-level="1.1.6" data-path="section-1.html"><a href="section-1.html#section-1.1.6"><i class="fa fa-check"></i><b>1.1.6</b> 向量索引与子集筛选</a></li>
+<li class="chapter" data-level="1.1.7" data-path="section-1.html"><a href="section-1.html#-factor"><i class="fa fa-check"></i><b>1.1.7</b> 因子向量 factor</a></li>
+<li class="chapter" data-level="1.1.8" data-path="section-1.html"><a href="section-1.html#-date"><i class="fa fa-check"></i><b>1.1.8</b> 日期向量 Date</a></li>
+</ul></li>
+<li class="chapter" data-level="1.2" data-path="section-1.html"><a href="section-1.html#-matrix"><i class="fa fa-check"></i><b>1.2</b> 矩阵 matrix</a><ul>
+<li class="chapter" data-level="1.2.1" data-path="section-1.html"><a href="section-1.html#section-1.2.1"><i class="fa fa-check"></i><b>1.2.1</b> 创建矩阵</a></li>
+<li class="chapter" data-level="1.2.2" data-path="section-1.html"><a href="section-1.html#section-1.2.2"><i class="fa fa-check"></i><b>1.2.2</b> 矩阵维度</a></li>
+<li class="chapter" data-level="1.2.3" data-path="section-1.html"><a href="section-1.html#section-1.2.3"><i class="fa fa-check"></i><b>1.2.3</b> 矩阵索引</a></li>
+<li class="chapter" data-level="1.2.4" data-path="section-1.html"><a href="section-1.html#section-1.2.4"><i class="fa fa-check"></i><b>1.2.4</b> 矩阵合并</a></li>
+<li class="chapter" data-level="1.2.5" data-path="section-1.html"><a href="section-1.html#section-1.2.5"><i class="fa fa-check"></i><b>1.2.5</b> 矩阵计算</a></li>
+<li class="chapter" data-level="1.2.6" data-path="section-1.html"><a href="section-1.html#section-1.2.6"><i class="fa fa-check"></i><b>1.2.6</b> 矩阵检验与转化</a></li>
+</ul></li>
+<li class="chapter" data-level="1.3" data-path="section-1.html"><a href="section-1.html#-array"><i class="fa fa-check"></i><b>1.3</b> 数组 array</a></li>
+<li class="chapter" data-level="1.4" data-path="section-1.html"><a href="section-1.html#-data.frame"><i class="fa fa-check"></i><b>1.4</b> 数据框 data.frame</a><ul>
+<li class="chapter" data-level="1.4.1" data-path="section-1.html"><a href="section-1.html#section-1.4.1"><i class="fa fa-check"></i><b>1.4.1</b> 创建数据框</a></li>
+<li class="chapter" data-level="1.4.2" data-path="section-1.html"><a href="section-1.html#section-1.4.2"><i class="fa fa-check"></i><b>1.4.2</b> 数据框的属性</a></li>
+<li class="chapter" data-level="1.4.3" data-path="section-1.html"><a href="section-1.html#section-1.4.3"><i class="fa fa-check"></i><b>1.4.3</b> 数据结构与数据汇总</a></li>
+<li class="chapter" data-level="1.4.4" data-path="section-1.html"><a href="section-1.html#section-1.4.4"><i class="fa fa-check"></i><b>1.4.4</b> 访问数据框变量</a></li>
+<li class="chapter" data-level="1.4.5" data-path="section-1.html"><a href="section-1.html#section-1.4.5"><i class="fa fa-check"></i><b>1.4.5</b> 数据框的长度与类型</a></li>
+<li class="chapter" data-level="1.4.6" data-path="section-1.html"><a href="section-1.html#section-1.4.6"><i class="fa fa-check"></i><b>1.4.6</b> 数据框索引与筛选</a></li>
+</ul></li>
+<li class="chapter" data-level="1.5" data-path="section-1.html"><a href="section-1.html#-list"><i class="fa fa-check"></i><b>1.5</b> 列表 list</a><ul>
+<li class="chapter" data-level="1.5.1" data-path="section-1.html"><a href="section-1.html#section-1.5.1"><i class="fa fa-check"></i><b>1.5.1</b> 多种类型的复合数据</a></li>
+<li class="chapter" data-level="1.5.2" data-path="section-1.html"><a href="section-1.html#section-1.5.2"><i class="fa fa-check"></i><b>1.5.2</b> 非结构化的数据存储方式</a></li>
+<li class="chapter" data-level="1.5.3" data-path="section-1.html"><a href="section-1.html#section-1.5.3"><i class="fa fa-check"></i><b>1.5.3</b> 对象的集合</a></li>
+<li class="chapter" data-level="1.5.4" data-path="section-1.html"><a href="section-1.html#section-1.5.4"><i class="fa fa-check"></i><b>1.5.4</b> 列表子集筛选</a></li>
+</ul></li>
+<li class="chapter" data-level="1.6" data-path="section-1.html"><a href="section-1.html#-special-values"><i class="fa fa-check"></i><b>1.6</b> 特殊值 Special Values</a><ul>
+<li class="chapter" data-level="1.6.1" data-path="section-1.html"><a href="section-1.html#-null"><i class="fa fa-check"></i><b>1.6.1</b> 空值 NULL</a></li>
+<li class="chapter" data-level="1.6.2" data-path="section-1.html"><a href="section-1.html#-na"><i class="fa fa-check"></i><b>1.6.2</b> 缺失值 NA</a></li>
+<li class="chapter" data-level="1.6.3" data-path="section-1.html"><a href="section-1.html#-nan"><i class="fa fa-check"></i><b>1.6.3</b> 非数值 NaN</a></li>
+<li class="chapter" data-level="1.6.4" data-path="section-1.html"><a href="section-1.html#-inf--inf"><i class="fa fa-check"></i><b>1.6.4</b> 无穷大/无穷小 Inf /-Inf</a></li>
+</ul></li>
+<li class="chapter" data-level="1.7" data-path="section-1.html"><a href="section-1.html#section-1.7"><i class="fa fa-check"></i><b>1.7</b> 数据模式、类型与对象的类辨析</a><ul>
+<li class="chapter" data-level="1.7.1" data-path="section-1.html"><a href="section-1.html#section-1.7.1"><i class="fa fa-check"></i><b>1.7.1</b> 数据模式、类型</a></li>
+<li class="chapter" data-level="1.7.2" data-path="section-1.html"><a href="section-1.html#section-1.7.2"><i class="fa fa-check"></i><b>1.7.2</b> 对象的类</a></li>
+<li class="chapter" data-level="1.7.3" data-path="section-1.html"><a href="section-1.html#section-1.7.3"><i class="fa fa-check"></i><b>1.7.3</b> 基本数据结构的联系与区别</a></li>
+</ul></li>
+</ul></li>
+<li class="chapter" data-level="2" data-path="section-2.html"><a href="section-2.html"><i class="fa fa-check"></i><b>2</b> 函数式编程</a><ul>
+<li class="chapter" data-level="2.1" data-path="section-2.html"><a href="section-2.html#section-2.1"><i class="fa fa-check"></i><b>2.1</b> 基础包中的函数</a><ul>
+<li class="chapter" data-level="2.1.1" data-path="section-2.html"><a href="section-2.html#section-2.1.1"><i class="fa fa-check"></i><b>2.1.1</b> 基本数学函数</a></li>
+<li class="chapter" data-level="2.1.2" data-path="section-2.html"><a href="section-2.html#section-2.1.2"><i class="fa fa-check"></i><b>2.1.2</b> 描述统计函数</a></li>
+<li class="chapter" data-level="2.1.3" data-path="section-2.html"><a href="section-2.html#section-2.1.3"><i class="fa fa-check"></i><b>2.1.3</b> 字符处理函数</a></li>
+</ul></li>
+<li class="chapter" data-level="2.2" data-path="section-2.html"><a href="section-2.html#section-2.2"><i class="fa fa-check"></i><b>2.2</b> 编写自定义函数</a></li>
+<li class="chapter" data-level="2.3" data-path="section-2.html"><a href="section-2.html#section-2.3"><i class="fa fa-check"></i><b>2.3</b> 扩展函数包</a></li>
+</ul></li>
+<li class="chapter" data-level="3" data-path="section-3.html"><a href="section-3.html"><i class="fa fa-check"></i><b>3</b> 数据处理</a><ul>
+<li class="chapter" data-level="3.1" data-path="section-3.html"><a href="section-3.html#magrittr-"><i class="fa fa-check"></i><b>3.1</b> magrittr 管道操作符：流式编程</a><ul>
+<li class="chapter" data-level="3.1.1" data-path="section-3.html"><a href="section-3.html#magrittr"><i class="fa fa-check"></i><b>3.1.1</b> magrittr介绍</a></li>
+<li class="chapter" data-level="3.1.2" data-path="section-3.html"><a href="section-3.html#section-3.1.2"><i class="fa fa-check"></i><b>3.1.2</b> 管道操作符</a></li>
+<li class="chapter" data-level="3.1.3" data-path="section-3.html"><a href="section-3.html#section-3.1.3"><i class="fa fa-check"></i><b>3.1.3</b> 运算符号的通用函数</a></li>
+</ul></li>
+<li class="chapter" data-level="3.2" data-path="section-3.html"><a href="section-3.html#dplyr-"><i class="fa fa-check"></i><b>3.2</b> dplyr 数据表处理语法</a><ul>
+<li class="chapter" data-level="3.2.1" data-path="section-3.html"><a href="section-3.html#dplyr"><i class="fa fa-check"></i><b>3.2.1</b> dplyr介绍</a></li>
+<li class="chapter" data-level="3.2.2" data-path="section-3.html"><a href="section-3.html#-6-"><i class="fa fa-check"></i><b>3.2.2</b> 单表操作的 6 个主函数</a></li>
+<li class="chapter" data-level="3.2.3" data-path="section-3.html"><a href="section-3.html#summary-window-function"><i class="fa fa-check"></i><b>3.2.3</b> summary &amp; window function</a></li>
+<li class="chapter" data-level="3.2.4" data-path="section-3.html"><a href="section-3.html#-join--combine"><i class="fa fa-check"></i><b>3.2.4</b> 多表操作 join 和 combine</a></li>
+<li class="chapter" data-level="3.2.5" data-path="section-1.html"><a href="section-1.html#-combine"><i class="fa fa-check"></i><b>3.2.5</b> 合并 combine</a></li>
+</ul></li>
+</ul></li>
+<li class="divider"></li>
+<li><a href="http://lixionghui.com/">返回 lixionghui.com</a></li>
+
+</ul>
+
+      </nav>
+    </div>
+
+    <div class="book-body">
+      <div class="body-inner">
+        <div class="book-header" role="navigation">
+          <h1>
+            <i class="fa fa-circle-o-notch fa-spin"></i><a href="./">利用R语言进行数据分析</a>
+          </h1>
+        </div>
+
+        <div class="page-wrapper" tabindex="-1" role="main">
+          <div class="page-inner">
+
+            <section class="normal" id="section-">
+<div id="section-3" class="section level1">
+<h1><span class="header-section-number">第3章</span> 数据处理</h1>
+<p>在本章中我们将讲解如何利用特定扩展包，高效处理数据集。</p>
+
+<div id="magrittr-" class="section level2">
+<h2><span class="header-section-number">3.1</span> magrittr 管道操作符：流式编程</h2>
+<div id="magrittr" class="section level3">
+<h3><span class="header-section-number">3.1.1</span> magrittr介绍</h3>
+<p><code>magrittr</code>包被定义为一个高效的管道操作工具包，通过管道的连接方式，让数据或表达式的传递更高效，使用操作符<code>%&gt;%</code>，可以直接把数据传递给下一个函数调用。</p>
+<p><code>magrittr</code>包有两个主要目标:</p>
+<ul>
+<li>第一是减少代码开发时间，提高代码的可读性和维护性</li>
+<li>第二是让你的代码更短</li>
+</ul>
+<p>magrittr包，主要定义了4个管道操作符，分别是:</p>
+<ul>
+<li><code>%&gt;%</code>, Forward pipe operator，向右操作符，主操作符</li>
+</ul>
+<blockquote>
+<p>将左边的结果传递给右边的函数作为第一个参数值，其结果可以继续又右边传递</p>
+</blockquote>
+<ul>
+<li><code>%T&gt;%</code>，Tee operations，向左操作符</li>
+</ul>
+<blockquote>
+<p>与<code>%&gt;%</code>的区别是其结果不能向右传递，继续向右传递的是<code>%T&gt;%</code>左边的结果，<code>%T&gt;%</code>通常用来输出图形、打印结果到屏幕或者输出到文件，然后继续<code>%&gt;%</code>操作</p>
+</blockquote>
+<ul>
+<li><code>%$%</code> ，Pipe with exposition of variables，解释操作符</li>
+</ul>
+<blockquote>
+<p>通常左边是数据框，<code>%$%</code> 之后右边函数可直接通过使用该数据框的变量</p>
+</blockquote>
+<ul>
+<li><code>%&lt;&gt;%</code>，Compound assignment pipe operations，复合赋值管道操作符</li>
+</ul>
+<blockquote>
+<p>只能出现在最左边的对象之后，用于在一长串处理管道操作之后直接赋值到最左边的对象上</p>
+</blockquote>
+<p><code>magrittr</code>的项目主页： <a href="https://github.com/smbache/magrittr" class="uri">https://github.com/smbache/magrittr</a></p>
+</div>
+<div id="section-3.1.2" class="section level3">
+<h3><span class="header-section-number">3.1.2</span> 管道操作符</h3>
+<div id="-t" class="section level4">
+<h4><span class="header-section-number">3.1.2.1</span> %&gt;% 和 %T%</h4>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;magrittr&quot;</span>) <span class="co"># 第一次使用前先从 CRAN 安装 magrittr 包</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(magrittr) <span class="co"># 使用前载入 magrittr 包</span></code></pre></div>
+<p><code>%&gt;%</code> 主管道操作符的基本用法：x 是一个数据对象, f(data, p = value) 是一个函数</p>
+<ul>
+<li>x %&gt;% f() 等价于 f(x)</li>
+<li>x %&gt;% f(p = value) 等价于 f(data = x, p = value)</li>
+<li>x %&gt;% f(p = .) 等价于 f(data = x, p = x) ；这里的 <code>.</code> 代表从左边传递过来的对象（没有名字故而使用<code>.</code>替代）[这个说法不太严谨，暂且先这么用]</li>
+<li>x %&gt;% f1() %&gt;% f2() 等价于 f2(f1(x))</li>
+</ul>
+<hr />
+<p><code>%T&gt;%</code> 操作符的基本用法：</p>
+<ul>
+<li>x %T&gt;% f() 等价于 f(x)</li>
+<li>x %T&gt;% f1() %&gt;% f2() 等价于 f1(x); f2(x)</li>
+</ul>
+<hr />
+<p>如果只是做一次管道传递是没必要定义这样特殊操作符的，通常情况下是一连串的管道操作才其优势。</p>
+<p>这里对员工数据集中出生日期向量做操作案例，目的是筛选出在1900年后出生的员工，并计算这些人出生年份的中位数。</p>
+<p>这里先将出生日期按照字符串处理，而不是用日期函数来直接提取，使得多几个操作步骤，以显示管道操作符的便捷性。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">birthday %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">as.character</span>() %&gt;%<span class="st"> </span><span class="co"># 先将 Date 类转化为字符型</span>
+<span class="st">  </span><span class="kw">substr</span>(<span class="dv">1</span>, <span class="dv">4</span>) %&gt;%<span class="st"> </span><span class="co"># 提取字符串，从第1个字符到第4个字符，年份</span>
+<span class="st">  </span><span class="kw">as.integer</span>() %&gt;%<span class="st"> </span><span class="co"># 将出生年份字符转化为整数型</span>
+<span class="st">  </span><span class="kw">set_names</span>(name) %&gt;%<span class="st"> </span><span class="co"># 将员工名字赋值给生年份的结果向量</span>
+<span class="st">  </span><span class="kw">subset</span>(. &gt;=<span class="st"> </span><span class="dv">1990</span>) %T&gt;%<span class="st"> </span><span class="co"># 使用 . 代表从左边传递过来的对象</span>
+<span class="st">  </span><span class="kw">print</span>() %&gt;%<span class="st"> </span><span class="co"># %T&gt;% 之后操作结果不作为下一个操作符的结果</span>
+<span class="st">  </span>median <span class="co"># 当一个函数没有其他参数时可省略函数的括号</span>
+<span class="co">#&gt;   张伟 李元礼 杨伯侨 赵蜚廉 沈约度 陈淮阳 况天佑 王珍珍 </span>
+<span class="co">#&gt;   1990   1992   1991   1990   1993   1991   1991   1992</span>
+<span class="co">#&gt; [1] 1991</span></code></pre></div>
+<p>其中 <code>set_names</code> 是 <code>magrittr</code> 中的函数，set_names(x, name) 等价于 names(x) &lt;- name。这里将其定位为f(x, p = value) 的形式，便于在管道符操作中使用函数。</p>
+<p>上面出生年份的示例，如果不使用管道操作符，有两种传统写法，分别如下：</p>
+<p>分步顺序操作，使用临时变量</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw">as.character</span>(birthday)
+temp &lt;-<span class="st"> </span><span class="kw">substr</span>(temp, <span class="dv">1</span>, <span class="dv">4</span>)
+temp &lt;-<span class="st"> </span><span class="kw">as.integer</span>(temp)
+<span class="kw">names</span>(temp) &lt;-<span class="st"> </span>name <span class="co"># 或者 magrittr 中的函数 set_names(temp, name) </span>
+temp &lt;-<span class="st"> </span><span class="kw">subset</span>(temp, temp &gt;=<span class="st"> </span><span class="dv">1990</span>)
+<span class="kw">print</span>(temp)
+<span class="co">#&gt;   张伟 李元礼 杨伯侨 赵蜚廉 沈约度 陈淮阳 况天佑 王珍珍 </span>
+<span class="co">#&gt;   1990   1992   1991   1990   1993   1991   1991   1992</span>
+<span class="kw">median</span>(temp)
+<span class="co">#&gt; [1] 1991</span></code></pre></div>
+<p>函数嵌套</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw">set_names</span>(<span class="kw">as.integer</span>(<span class="kw">substr</span>(<span class="kw">as.character</span>(birthday), <span class="dv">1</span>, <span class="dv">4</span>)), name)
+temp &lt;-<span class="st"> </span><span class="kw">subset</span>(temp, temp &gt;=<span class="st"> </span><span class="dv">1990</span>) <span class="co"># subset 中用到了两次同一个变量，这里用一个中间临时变量还方便些</span>
+<span class="kw">print</span>(temp) <span class="co"># print 和 meian 两次不同的输出，还得使用一次中间变量</span>
+<span class="co">#&gt;   张伟 李元礼 杨伯侨 赵蜚廉 沈约度 陈淮阳 况天佑 王珍珍 </span>
+<span class="co">#&gt;   1990   1992   1991   1990   1993   1991   1991   1992</span>
+<span class="kw">median</span>(temp)
+<span class="co">#&gt; [1] 1991</span></code></pre></div>
+<p>分步操作中需要多次书写同一个变量名称，较为繁琐；过多的函数嵌套时，不便于理解操作步骤且容易输错。</p>
+<p>管道操作符使得程序逻辑更为通顺便于理解，减少中间结果的重复输入。</p>
+<p>代码最佳书写风格是，在每个管道操作符后换行，便于执行选择前半部分操作执行结果，或者注释中间操作。</p>
+</div>
+<div id="section" class="section level4">
+<h4><span class="header-section-number">3.1.2.2</span> %$%</h4>
+<p>管道操作符对所有数据对象有效，而不仅仅是向量，我们来看数据框计算的例子。</p>
+<p>使用 employee 数据集，做 subset 子集筛选，和直接用其中的变量作图和计算</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">subset</span>(gender ==<span class="st"> &quot;男&quot;</span>) %$%<span class="st"> </span><span class="co">#筛选男性</span>
+<span class="st">  </span><span class="kw">plot</span>(weight, height) <span class="co"># %$% 之后可直接使用data.frame中的variables，做散点图</span>
+
+employee %&gt;%
+<span class="st">  </span><span class="kw">subset</span>(<span class="dt">islocal =</span> <span class="ot">TRUE</span>) %$%<span class="st"> </span><span class="co">#筛选本地</span>
+<span class="st">  </span><span class="kw">cor</span>(weight, height) <span class="co"># %$% 之后可直接使用数据框中的变量，计算相关系数</span>
+<span class="co">#&gt; [1] 0.666</span></code></pre></div>
+<p><img src="magrittr_files/figure-html/unnamed-chunk-8-1.png" width="70%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="section-1" class="section level4">
+<h4><span class="header-section-number">3.1.2.3</span> %&lt;&gt;%</h4>
+<p>有时候我们需要将管道操作后最后的结果赋值给最初的对象以更新其结果，这时可以用<code>%&lt;&gt;%</code>操作符。</p>
+<p>建议，在最初的时候还是使用<code>%&gt;%</code>操作符，在确认最终的结果正确后需要该写初始对象，则再修改第一个操作符为<code>%&lt;&gt;%</code>。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">temp &lt;-<span class="st"> </span><span class="kw">seq</span>(<span class="dv">1</span>:<span class="dv">10</span>)
+<span class="kw">print</span>(temp)
+<span class="co">#&gt;  [1]  1  2  3  4  5  6  7  8  9 10</span>
+temp %&lt;&gt;%<span class="st"> </span><span class="co"># 将管道操作最后一个结果返回给最开始的 temp</span>
+<span class="st">  </span>sqrt %&gt;%
+<span class="st">  </span>log <span class="co"># 最后的结果重新复制给 temp；等价于 log 之后的结果 -&gt; temp</span>
+<span class="kw">print</span>(temp) <span class="co"># 验证 temp 是否已经改变</span>
+<span class="co">#&gt;  [1] 0.000 0.347 0.549 0.693 0.805 0.896 0.973 1.040 1.099 1.151</span></code></pre></div>
+</div>
+</div>
+<div id="section-3.1.3" class="section level3">
+<h3><span class="header-section-number">3.1.3</span> 运算符号的通用函数</h3>
+<p>在管道操作中间过程，有时会用到一些算术符号运算，在 maggrittr 中做一些常用的运算符号定义为通用函数，使其可以像普通函数那样调用，且支持直接使用操作符，但需要用特殊符号将其标记。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 将身高数值从单位为米转化为厘米，并包含“厘米”转化字符串输出</span>
+height %&gt;%<span class="st"> `</span><span class="dt">*</span><span class="st">`</span> (<span class="dv">100</span>) %&gt;%<span class="st"> </span><span class="kw">paste0</span>(<span class="dt">sep =</span> <span class="st">&quot;厘米&quot;</span>) 
+<span class="co">#&gt;  [1] &quot;173厘米&quot; &quot;168厘米&quot; &quot;172厘米&quot; &quot;165厘米&quot; &quot;166厘米&quot; &quot;162厘米&quot; &quot;181厘米&quot;</span>
+<span class="co">#&gt;  [8] &quot;174厘米&quot; &quot;178厘米&quot; &quot;171厘米&quot; &quot;172厘米&quot; &quot;169厘米&quot; &quot;174厘米&quot; &quot;170厘米&quot;</span>
+<span class="co">#&gt; [15] &quot;172厘米&quot;</span>
+height %&gt;%<span class="st"> </span><span class="kw">multiply_by</span>(<span class="dv">100</span>) %&gt;%<span class="st"> </span><span class="kw">paste0</span>(<span class="dt">sep =</span> <span class="st">&quot;厘米&quot;</span>) <span class="co"># multiply_by 是 `*` 乘法符号的函数写法</span>
+<span class="co">#&gt;  [1] &quot;173厘米&quot; &quot;168厘米&quot; &quot;172厘米&quot; &quot;165厘米&quot; &quot;166厘米&quot; &quot;162厘米&quot; &quot;181厘米&quot;</span>
+<span class="co">#&gt;  [8] &quot;174厘米&quot; &quot;178厘米&quot; &quot;171厘米&quot; &quot;172厘米&quot; &quot;169厘米&quot; &quot;174厘米&quot; &quot;170厘米&quot;</span>
+<span class="co">#&gt; [15] &quot;172厘米&quot;</span></code></pre></div>
+<p>通用函数和操作符号一栏表</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">函数</th>
+<th align="left">操作符</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">extract</td>
+<td align="left"><code>[</code></td>
+</tr>
+<tr class="even">
+<td align="left">multiply_by</td>
+<td align="left"><code>*</code></td>
+</tr>
+<tr class="odd">
+<td align="left">extract2</td>
+<td align="left"><code>[[</code></td>
+</tr>
+<tr class="even">
+<td align="left">inset</td>
+<td align="left"><code>[&lt;-</code></td>
+</tr>
+<tr class="odd">
+<td align="left">inset2</td>
+<td align="left"><code>[[&lt;-</code></td>
+</tr>
+<tr class="even">
+<td align="left">use_series</td>
+<td align="left"><code>$</code></td>
+</tr>
+<tr class="odd">
+<td align="left">add</td>
+<td align="left"><code>+</code></td>
+</tr>
+<tr class="even">
+<td align="left">subtract</td>
+<td align="left"><code>-</code></td>
+</tr>
+<tr class="odd">
+<td align="left">multiply_by</td>
+<td align="left"><code>*</code></td>
+</tr>
+<tr class="even">
+<td align="left">raise_to_power</td>
+<td align="left"><code>^</code></td>
+</tr>
+<tr class="odd">
+<td align="left">multiply_by_matrix</td>
+<td align="left"><code>%*%</code></td>
+</tr>
+<tr class="even">
+<td align="left">divide_by</td>
+<td align="left"><code>/</code></td>
+</tr>
+<tr class="odd">
+<td align="left">divide_by_int</td>
+<td align="left"><code>%/%</code></td>
+</tr>
+<tr class="even">
+<td align="left">mod</td>
+<td align="left"><code>%%</code></td>
+</tr>
+<tr class="odd">
+<td align="left">is_in</td>
+<td align="left"><code>%in%</code></td>
+</tr>
+<tr class="even">
+<td align="left">and</td>
+<td align="left"><code>&amp;</code></td>
+</tr>
+<tr class="odd">
+<td align="left">or</td>
+<td align="left"><code>|</code></td>
+</tr>
+<tr class="even">
+<td align="left">equals</td>
+<td align="left"><code>==</code></td>
+</tr>
+<tr class="odd">
+<td align="left">is_greater_than</td>
+<td align="left"><code>&gt;</code></td>
+</tr>
+<tr class="even">
+<td align="left">is_weakly_greater_than</td>
+<td align="left"><code>&gt;=</code></td>
+</tr>
+<tr class="odd">
+<td align="left">is_less_than</td>
+<td align="left"><code>&lt;</code></td>
+</tr>
+<tr class="even">
+<td align="left">is_weakly_less_than</td>
+<td align="left"><code>&lt;=</code></td>
+</tr>
+<tr class="odd">
+<td align="left">not (<code>n'est pas</code>)</td>
+<td align="left"><code>!</code></td>
+</tr>
+<tr class="even">
+<td align="left">set_colnames</td>
+<td align="left"><code>colnames&lt;-</code></td>
+</tr>
+<tr class="odd">
+<td align="left">set_rownames</td>
+<td align="left"><code>rownames&lt;-</code></td>
+</tr>
+<tr class="even">
+<td align="left">set_names</td>
+<td align="left"><code>names&lt;-</code></td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p>在后续章节的综合数据处理过程中，将会大量使用到 magrittr 中管道操作符，有需要特别指出的时候会做做进一步说明。</p>
+
+</div>
+</div>
+<div id="dplyr-" class="section level2">
+<h2><span class="header-section-number">3.2</span> dplyr 数据表处理语法</h2>
+<div id="dplyr" class="section level3">
+<h3><span class="header-section-number">3.2.1</span> dplyr介绍</h3>
+<p><code>dplyr</code>包是从<code>plyr</code>演化而来，关注处理 data.frame 等对象的表格形式数据。该包有三个主要目标：</p>
+<ul>
+<li>简化表格数据的预处理过程</li>
+<li>用C++重写了计算底层以提高性能</li>
+<li>统一了接口函数，使得处理 data.frame 等对象和数据库中的表对象保持一致</li>
+</ul>
+<p>前两个目标和在一起就是提高处理 data.frame 的效率；至于数据库处理留存专门的读写数据库章节中再讲解。</p>
+<p><code>dplyr</code>的项目主页： <a href="https://github.com/hadley/dplyr" class="uri">https://github.com/hadley/dplyr</a></p>
+</div>
+<div id="-6-" class="section level3">
+<h3><span class="header-section-number">3.2.2</span> 单表操作的 6 个主函数</h3>
+<p><code>dplyr</code>提供了6个主函数来处理 data.frame。</p>
+<p>我们可以用数据库SQL查询语句的关键字来做类比。</p>
+<p>数据库中单表操作的主要语法是</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">select</span> 
+<span class="kw">from</span> 
+<span class="kw">where</span> 
+<span class="kw">group</span> <span class="kw">by</span> 
+<span class="kw">order</span> <span class="kw">by</span> </code></pre></div>
+<p><code>dplyr</code> 中主操作函数是</p>
+<ul>
+<li>select() 列筛选，类似于 SQL 中的 select</li>
+<li>filter() 行筛选，类似于 SQL 中的 where</li>
+<li>arrage() 排序，类似于 SQL 中的 order by</li>
+<li>group_by 分组，类似于 SQL 中的 group by</li>
+<li>summarise() 汇总，类似于 SQL 中的 aggregate Functions</li>
+<li>muate() 变形, 类似于 SQL 中的 analytic functions / window funtions</li>
+</ul>
+<p>RStudio 官网上有一个关于 dplyr 的速查表，是最佳学习资源，强烈推荐！</p>
+<blockquote>
+<p>Data Wrangling Cheat Sheet <a href="https://www.rstudio.com/resources/cheatsheets/" class="uri">https://www.rstudio.com/resources/cheatsheets/</a></p>
+</blockquote>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">install.packages</span>(<span class="st">&quot;dplyr&quot;</span>) <span class="co"># 第一次使用之前先从 CRAN 中安装</span></code></pre></div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(dplyr) <span class="co"># 使用之前载入</span>
+<span class="co"># 特别要说明的是，dplyr 已经预置了管道操作符 %&gt;% </span>
+<span class="co"># 可直接使用 管道操作符 %&gt;% 而不用再单独载入 magrittr</span></code></pre></div>
+<div id="-select" class="section level4">
+<h4><span class="header-section-number">3.2.2.1</span> 列筛选 select</h4>
+<p>在 <code>base</code> 中 data.frame 的子集筛选通常使用 <code>subset()</code> 包含了筛选行的条件 <code>subset</code> 以及列筛选条件 <code>select</code>。</p>
+<p>在 <code>dplyr</code> 中 参数 <code>subset</code> 逻辑表达式拆分出来成为 <code>filter()</code> 函数，而参数 <code>select</code> 也被拆分出来独立出来成为 <code>select()</code> 函数。</p>
+<p>独立拆分使得行列筛选功能变得更为强大，也使其方便在管道操作符、分步流式编程中更为方便。</p>
+<hr />
+<p><code>select()</code> 函数用来做 data.frame 的变量筛选，最基本地，支持整数位置索引。</p>
+<pre><code>#&gt;        height weight
+#&gt; 宋子启   1.73     73
+#&gt; 张伯仲   1.68     70
+#&gt; 孟轲舆   1.72     68</code></pre>
+<p>在 <code>dplyr</code> 中，主函数的第一个参数对象都是 data.frame ，其后的参数即可直接使用 variables 。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st"> </span><span class="kw">select</span>(height, weight) %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>)
+<span class="co">#&gt;        height weight</span>
+<span class="co">#&gt; 宋子启   1.73     73</span>
+<span class="co">#&gt; 张伯仲   1.68     70</span>
+<span class="co">#&gt; 孟轲舆   1.72     68</span>
+
+<span class="co"># 从某个变量A到变量B中所有变量（包含A和B）</span>
+employee %&gt;%<span class="st"> </span><span class="kw">select</span>(height:birthday) %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;        height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 宋子启   1.73     73    TRUE     男    中 1984-02-28</span>
+<span class="co">#&gt; 张伯仲   1.68     70    TRUE     男    良 1988-09-26</span>
+<span class="co">#&gt; 孟轲舆   1.72     68   FALSE     男    良 1989-07-28</span></code></pre></div>
+<p>在 <code>select</code> 中，编写了辅助选取变量名的匹配函数，用来高效完成有规则的变量筛选。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 包含字符 ght 的变量（普通匹配）</span>
+employee %&gt;%<span class="st"> </span><span class="kw">select</span>(<span class="kw">contains</span>(<span class="st">&quot;ght&quot;</span>)) %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;        height weight</span>
+<span class="co">#&gt; 宋子启   1.73     73</span>
+<span class="co">#&gt; 张伯仲   1.68     70</span>
+<span class="co">#&gt; 孟轲舆   1.72     68</span>
+
+<span class="co"># 以字符 de 结尾的变量 (正则匹配)</span>
+employee %&gt;%<span class="st"> </span><span class="kw">select</span>(<span class="kw">matches</span>(<span class="st">&quot;.*de$&quot;</span>))  %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;        grade</span>
+<span class="co">#&gt; 宋子启    中</span>
+<span class="co">#&gt; 张伯仲    良</span>
+<span class="co">#&gt; 孟轲舆    良</span></code></pre></div>
+</div>
+<div id="-filter" class="section level4">
+<h4><span class="header-section-number">3.2.2.2</span> 行筛选 filter</h4>
+<p><code>filter()</code>中的筛选，与 <code>subset()</code> 中的 subset 逻辑表达式最大的不同是，<code>filter()</code>中多个逻辑条件可以用逗号隔开（他们之间的逻辑是 &amp; 的关系）, 类似于 SQL 中 where 各个条件中间用 and 隔开，使得书写更为自然。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st"> </span><span class="kw">filter</span>(height &gt;=<span class="st"> </span><span class="fl">1.75</span>) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 2 赵蜚廉   1.78     78   FALSE     男    中 1990-08-08</span>
+
+<span class="co"># 多个 &amp; 的逻辑表达式，可用逗号隔开</span>
+employee %&gt;%<span class="st"> </span><span class="kw">filter</span>(height &gt;=<span class="st"> </span><span class="fl">1.70</span>, gender ==<span class="st"> &quot;女&quot;</span>) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1   蒋欣   1.71     54   FALSE     女    良 1985-05-10</span>
+<span class="co">#&gt; 2 王珍珍   1.70     53    TRUE     女    中 1992-01-31</span>
+<span class="co">#&gt; 3 马小玲   1.72     82    TRUE     女    优 1988-02-14</span></code></pre></div>
+<p>行筛选还有一些函数来实现类似于SQL中的用法，对于连接的数据库表对象，可直接使用 dplyr 函数，而不用通过 SQL 语法。</p>
+<div id="section-3.2.2.2.1" class="section level5">
+<h5><span class="header-section-number">3.2.2.2.1</span> 结果排重</h5>
+<p><code>排重</code>函数 <code>distinct()</code> 类似于 SQL 中的 <code>disttinct</code> 关键字，用来排除有重复记录的行</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">distinct</span>(employee)
+<span class="co">#&gt;      name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1  宋子启   1.73     73    TRUE     男    中 1984-02-28</span>
+<span class="co">#&gt; 2  张伯仲   1.68     70    TRUE     男    良 1988-09-26</span>
+<span class="co">#&gt; 3  孟轲舆   1.72     68   FALSE     男    良 1989-07-28</span>
+<span class="co">#&gt; 4    张伟   1.65     60    TRUE     男    中 1990-01-25</span>
+<span class="co">#&gt; 5  王雪梅   1.66     55   FALSE     女    优 1987-04-30</span>
+<span class="co">#&gt; 6  陈梦妍   1.62     52   FALSE     女    良 1989-12-20</span>
+<span class="co">#&gt; 7  李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 8  杨伯侨   1.74     75    TRUE     男    优 1991-07-01</span>
+<span class="co">#&gt; 9  赵蜚廉   1.78     78   FALSE     男    中 1990-08-08</span>
+<span class="co">#&gt; 10   蒋欣   1.71     54   FALSE     女    良 1985-05-10</span>
+<span class="co">#&gt; 11 沈约度   1.72     61    TRUE     男    良 1993-04-01</span>
+<span class="co">#&gt; 12 陈淮阳   1.69     62    TRUE     男    中 1991-03-05</span>
+<span class="co">#&gt; 13 况天佑   1.74     56   FALSE     男    良 1991-09-25</span>
+<span class="co">#&gt; 14 王珍珍   1.70     53    TRUE     女    中 1992-01-31</span>
+<span class="co">#&gt; 15 马小玲   1.72     82    TRUE     女    优 1988-02-14</span></code></pre></div>
+</div>
+<div id="top-bottom" class="section level5">
+<h5><span class="header-section-number">3.2.2.2.2</span> Top / Bottom</h5>
+<p><code>top_n()</code>函数，用来筛选 data.frame 的前 N 行记录，类似于 SQL Server 中的 top 、 MySQL 中 limit 、Oracle 中的 rownum 关键字。</p>
+<p><code>top_n(x, n, wt)</code>用法</p>
+<ul>
+<li>参数 x 是继承 data.frame 的数据表对象，如果 x 是包含分组信息的表对象 ，则 top_n 就是返回每个分组中的 n 行结果；没有分组的 data.frame 是分为一组的特殊情况</li>
+<li>参数 n 是返回结果的行数，可以是正整数，返回正序的前 n 行；如果是负数，返回倒序的后 n 行</li>
+<li>参数 wt 是排序的权重字段，是可选项，如果没有指定，则以最后一个字段为排序；这里的排序只是用来做筛选条件的排序，但不会将结果重新排列</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 筛选前3行，按照最后一个字段排序的前3个</span>
+employee %&gt;%<span class="st"> </span><span class="kw">top_n</span>(<span class="dv">3</span>) 
+<span class="co">#&gt; Selecting by birthday</span>
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 2 沈约度   1.72     61    TRUE     男    良 1993-04-01</span>
+<span class="co">#&gt; 3 王珍珍   1.70     53    TRUE     女    中 1992-01-31</span>
+
+<span class="co"># 指定 wt ，等到年龄最小的3名员工(birthday的数值最大)</span>
+employee %&gt;%<span class="st"> </span><span class="kw">top_n</span>(<span class="dv">3</span>, <span class="dt">wt =</span> birthday) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 2 沈约度   1.72     61    TRUE     男    良 1993-04-01</span>
+<span class="co">#&gt; 3 王珍珍   1.70     53    TRUE     女    中 1992-01-31</span>
+
+<span class="co"># 筛选得到体重最轻的3名员工</span>
+employee %&gt;%<span class="st"> </span><span class="kw">top_n</span>(-<span class="dv">3</span>, <span class="dt">wt =</span> weight) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 陈梦妍   1.62     52   FALSE     女    良 1989-12-20</span>
+<span class="co">#&gt; 2   蒋欣   1.71     54   FALSE     女    良 1985-05-10</span>
+<span class="co">#&gt; 3 王珍珍   1.70     53    TRUE     女    中 1992-01-31</span></code></pre></div>
+</div>
+<div id="section-3.2.2.2.3" class="section level5">
+<h5><span class="header-section-number">3.2.2.2.3</span> 随机排序筛选，随机抽样</h5>
+<p>随机抽样有两个行数，<code>sample_n()</code> 是指定抽出 n 行，<code>sample_frac()</code> 是指定抽取总行数的百分比。</p>
+<p>还有其他两个参数可选，一个是 replace 为抽样是否放回，默认是否；另一个参数是 weight 指定权重，默认不指定。</p>
+<p>同样地，如果 data.frame 是分组的数据表，则按每组返回随机抽样结果。</p>
+<p>随机抽样，类似于 SQL Server 中的 order by newid()、MySQL中 ordery rand()、Oracle 中 order by dbms_random.value() 并且还要加上筛选 n 个结果的条件。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 指定 wt ，等到年龄最小的3名员工(birthday的数值最大)</span>
+employee %&gt;%<span class="st"> </span><span class="kw">sample_n</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;          name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 张伯仲 张伯仲   1.68     70    TRUE     男    良 1988-09-26</span>
+<span class="co">#&gt; 陈淮阳 陈淮阳   1.69     62    TRUE     男    中 1991-03-05</span>
+<span class="co">#&gt; 杨伯侨 杨伯侨   1.74     75    TRUE     男    优 1991-07-01</span>
+
+<span class="co"># 总行数 15 * 抽样比例 0.3 = 4.5 再向下取整得到 4</span>
+employee %&gt;%<span class="st"> </span><span class="kw">sample_frac</span>(<span class="fl">0.3</span>) 
+<span class="co">#&gt;          name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 孟轲舆 孟轲舆   1.72     68   FALSE     男    良 1989-07-28</span>
+<span class="co">#&gt; 宋子启 宋子启   1.73     73    TRUE     男    中 1984-02-28</span>
+<span class="co">#&gt; 李元礼 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 陈梦妍 陈梦妍   1.62     52   FALSE     女    良 1989-12-20</span></code></pre></div>
+</div>
+<div id="section-3.2.2.2.4" class="section level5">
+<h5><span class="header-section-number">3.2.2.2.4</span> 指定行范围</h5>
+<p><code>切片</code>函数 <code>slice()</code> 用来筛选 data.frame 的行，等价于 data.frame[n:m,]，使用的是行号的整数位置筛选。</p>
+<p>类似于，在 SQL 中先获得行号 <code>row_number</code> ，然后在 <code>where</code> 中指定 <code>row_number</code> 的范围。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st"> </span><span class="kw">slice</span>(<span class="dv">3</span>:<span class="dv">8</span>) <span class="co"># 不使用 %&gt;% 则写为 slice(employee, 3:8) # 等价于 employee[3:8,]</span>
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 孟轲舆   1.72     68   FALSE     男    良 1989-07-28</span>
+<span class="co">#&gt; 2   张伟   1.65     60    TRUE     男    中 1990-01-25</span>
+<span class="co">#&gt; 3 王雪梅   1.66     55   FALSE     女    优 1987-04-30</span>
+<span class="co">#&gt; 4 陈梦妍   1.62     52   FALSE     女    良 1989-12-20</span>
+<span class="co">#&gt; 5 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 6 杨伯侨   1.74     75    TRUE     男    优 1991-07-01</span></code></pre></div>
+</div>
+</div>
+<div id="-arrange" class="section level4">
+<h4><span class="header-section-number">3.2.2.3</span> 结果重排序 arrange</h4>
+<p>在 base 包中对 data.frame 做排序需要使用 order() 函数，并使用 [,] 做索引筛选；</p>
+<p>用 dplyr 包中的 arrage() 函数语法上更为简洁，且可以使用 %&gt;% 作为管道操作的中间过程。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee[<span class="kw">order</span>(employee$gender, -employee$height),]  %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>) <span class="co"># base 中的方式</span>
+<span class="co">#&gt;          name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 李元礼 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 赵蜚廉 赵蜚廉   1.78     78   FALSE     男    中 1990-08-08</span>
+<span class="co">#&gt; 杨伯侨 杨伯侨   1.74     75    TRUE     男    优 1991-07-01</span>
+
+employee %&gt;%<span class="st"> </span><span class="kw">arrange</span>(gender, <span class="kw">desc</span>(height)) %&gt;%<span class="st"> </span><span class="kw">head</span>(<span class="dv">3</span>) <span class="co"># dplyr 中 arrange 函数更为简洁</span>
+<span class="co">#&gt;     name height weight islocal gender grade   birthday</span>
+<span class="co">#&gt; 1 李元礼   1.81     80   FALSE     男    中 1992-06-14</span>
+<span class="co">#&gt; 2 赵蜚廉   1.78     78   FALSE     男    中 1990-08-08</span>
+<span class="co">#&gt; 3 杨伯侨   1.74     75    TRUE     男    优 1991-07-01</span></code></pre></div>
+</div>
+<div id="-mutate" class="section level4">
+<h4><span class="header-section-number">3.2.2.4</span> 增加一个新列 mutate</h4>
+<p><code>mutate()</code> 函数在 dplyr 中用来增加新列，直接利用 data.frame 中的变量名即可创建；与 base 中的 <code>transform()</code> 函数类似，主要不同在于在创建多个新列时，可直接使用刚创建的新变量。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># base 中的 employee$bmi = employee$weight / (employee$height ^ 2) 方法有同样效果</span>
+<span class="co"># 但没有 mutate 简洁，且可使用管道操作符，流式编程</span>
+employee %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># 增加 bmi 新变量，可直接使用 weight 和 height 运算</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bmi =</span> weight /<span class="st"> </span>(height ^<span class="st"> </span><span class="dv">2</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday  bmi</span>
+<span class="co">#&gt; 1 宋子启   1.73     73    TRUE     男    中 1984-02-28 24.4</span>
+<span class="co">#&gt; 2 张伯仲   1.68     70    TRUE     男    良 1988-09-26 24.8</span>
+<span class="co">#&gt; 3 孟轲舆   1.72     68   FALSE     男    良 1989-07-28 23.0</span>
+
+
+employee %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">bmi =</span> weight /<span class="st"> </span>(height ^<span class="st"> </span><span class="dv">2</span>), 
+         <span class="dt">log_bmi =</span> <span class="kw">log</span>(bmi)) %&gt;%<span class="st"> </span><span class="co"># 可直接使用新变量运算</span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;     name height weight islocal gender grade   birthday  bmi log_bmi</span>
+<span class="co">#&gt; 1 宋子启   1.73     73    TRUE     男    中 1984-02-28 24.4    3.19</span>
+<span class="co">#&gt; 2 张伯仲   1.68     70    TRUE     男    良 1988-09-26 24.8    3.21</span>
+<span class="co">#&gt; 3 孟轲舆   1.72     68   FALSE     男    良 1989-07-28 23.0    3.13</span></code></pre></div>
+<p><code>mutate()</code> 函数是新增列，并且保持了原有列不变；如果只想要保留新增的列，可使用 <code>transmute()</code>函数，则结果只有新增加的列。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># 增加 bmi 新变量，可直接使用 weight 和 height 运算</span>
+<span class="st">  </span><span class="kw">transmute</span>(<span class="dt">bmi =</span> weight /<span class="st"> </span>(height ^<span class="st"> </span><span class="dv">2</span>)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">3</span>) 
+<span class="co">#&gt;    bmi</span>
+<span class="co">#&gt; 1 24.4</span>
+<span class="co">#&gt; 2 24.8</span>
+<span class="co">#&gt; 3 23.0</span></code></pre></div>
+<p><code>mutate()</code> 中可直接使用 <code>window funtion</code>，比如 <code>dplyr</code> 中定义的 <code>row_number()</code> 函数，以及 <code>base</code> 中定义的 <code>cumsum()</code> 累计求和函数。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st"> </span><span class="co"># 给定员工信息表 employee</span>
+<span class="st">  </span><span class="kw">select</span>(name, height, weight) %&gt;%<span class="st"> </span><span class="co"># 筛选 name, height, weight 三列</span>
+<span class="st">  </span><span class="co"># 给员工编号，计算体重的累计求和</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">employee_no =</span> <span class="kw">row_number</span>(), 
+         <span class="dt">cumsum_weight =</span> <span class="kw">cumsum</span>(weight)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">head</span>(<span class="dv">3</span>) <span class="co"># 显示前3个结果</span>
+<span class="co">#&gt;     name height weight employee_no cumsum_weight</span>
+<span class="co">#&gt; 1 宋子启   1.73     73           1            73</span>
+<span class="co">#&gt; 2 张伯仲   1.68     70           2           143</span>
+<span class="co">#&gt; 3 孟轲舆   1.72     68           3           211</span></code></pre></div>
+<p>如果想要将某个 <code>window funtion</code> 应用在 data.frame 的所有列上，则可使用 <code>mutate(x, funs(window_function))</code>。其中 windwos functions 可以有多个函数，中间用逗号隔开。</p>
+<p>新变量的名字，有应用变量的名称，加上函数名称，中间用下划线组成。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st">  </span><span class="co"># 给定员工信息表 employee</span>
+<span class="st">  </span><span class="kw">select</span>(height, weight) %&gt;%<span class="st"> </span><span class="co"># 筛选 height 和 weight 两个变量</span>
+<span class="st">  </span><span class="kw">slice</span>(<span class="dv">3</span>:<span class="dv">5</span>) %&gt;%<span class="st"> </span><span class="co"># 筛选第3到5行</span>
+<span class="st">  </span><span class="co"># 对每个变量应用 cumsum 累计求和 与 cumprod 累计乘积函数</span>
+<span class="st">  </span><span class="kw">mutate_each</span>(<span class="kw">funs</span>(cumsum, cumprod))
+<span class="co">#&gt;   height weight height_cumsum weight_cumsum height_cumprod weight_cumprod</span>
+<span class="co">#&gt; 1   1.72     68          1.72            68           1.72             68</span>
+<span class="co">#&gt; 2   1.65     60          3.37           128           2.84           4080</span>
+<span class="co">#&gt; 3   1.66     55          5.03           183           4.71         224400</span></code></pre></div>
+</div>
+<div id="-summarise" class="section level4">
+<h4><span class="header-section-number">3.2.2.5</span> 汇总 summarise</h4>
+<p>汇总就是将 data.frame 通过计算后汇总一个值或者说是一行结果。汇总函数(summary funtion)有很多，比如计数、求和、均值等，类似于 SQL 中的 aggregate funtion 。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st">  </span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">employee_num =</span> <span class="kw">n</span>(), <span class="co"># 计数，有多少记录数，n() 函数没有参数</span>
+            <span class="dt">avg_height =</span> <span class="kw">mean</span>(height), <span class="co"># 平均身高</span>
+            <span class="dt">total_weight =</span> <span class="kw">sum</span>(weight), <span class="co"># 总体重</span>
+            <span class="dt">unique_grade =</span> <span class="kw">n_distinct</span>(grade) <span class="co"># 排重计数，统计有多少个不同的等级</span>
+            )
+<span class="co">#&gt;   employee_num avg_height total_weight unique_grade</span>
+<span class="co">#&gt; 1           15       1.71          979            3</span></code></pre></div>
+<p>类似于变形的 <code>mutate_each()</code>，汇总也有一个 <code>summarise_each()</code> 函数，用法相似。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%<span class="st">  </span><span class="co"># 给定员工信息表 employee</span>
+<span class="st">  </span><span class="kw">select</span>(height, weight) %&gt;%<span class="st"> </span><span class="co"># 筛选 height 和 weight 两个变量</span>
+<span class="st">  </span><span class="co"># 对每个变量应用 mean 求平均值 和 与 sum 求总和</span>
+<span class="st">  </span><span class="kw">summarise_each</span>(<span class="kw">funs</span>(mean, sum))
+<span class="co">#&gt;   height_mean weight_mean height_sum weight_sum</span>
+<span class="co">#&gt; 1        1.71        65.3       25.7        979</span></code></pre></div>
+</div>
+<div id="-group_by" class="section level4">
+<h4><span class="header-section-number">3.2.2.6</span> 分组 group_by</h4>
+<p>分组统计是数据表处理中非常重要的环节，在 <code>dplyr</code> 中，在对一个 data.frame 对象 <code>group_by</code> 后，该 <code>data.frame</code> 对象就会多了一个 <code>group_by</code> 的属性，对象的类也会变成 <code>tbl</code> ，是一个继承了 data.frame 的对象。</p>
+<p>可以对一个 data.frame 只执行 group_by 操作，而不去汇总或者变形等计算。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 按照 gender 和  islocal 分组</span>
+employee %&gt;%<span class="st">  </span><span class="kw">group_by</span>(gender, islocal)
+<span class="co">#&gt; Source: local data frame [15 x 7]</span>
+<span class="co">#&gt; Groups: gender, islocal [4]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      name height weight islocal gender  grade   birthday</span>
+<span class="co">#&gt;    &lt;fctr&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;lgl&gt; &lt;fctr&gt; &lt;fctr&gt;     &lt;date&gt;</span>
+<span class="co">#&gt; 1  宋子启   1.73     73    TRUE     男     中 1984-02-28</span>
+<span class="co">#&gt; 2  张伯仲   1.68     70    TRUE     男     良 1988-09-26</span>
+<span class="co">#&gt; 3  孟轲舆   1.72     68   FALSE     男     良 1989-07-28</span>
+<span class="co">#&gt; 4    张伟   1.65     60    TRUE     男     中 1990-01-25</span>
+<span class="co">#&gt; 5  王雪梅   1.66     55   FALSE     女     优 1987-04-30</span>
+<span class="co">#&gt; 6  陈梦妍   1.62     52   FALSE     女     良 1989-12-20</span>
+<span class="co">#&gt; ..    ...    ...    ...     ...    ...    ...        ...</span>
+<span class="co"># 打印结果的时候可以看到，多出了一个信息</span>
+<span class="co"># Groups: gender, islocal</span>
+<span class="co"># 表示按照 gender, islocal 这两个字段分组</span></code></pre></div>
+<p>如果想要解除一个分组的 data.frame ，可以使用 <code>ungroup()</code> 函数。</p>
+<p>当然，如果分组之后什么都不做，那分组没什么意义。</p>
+<p>分组后通常使用 summarise function 或者 window function 两类函数操作；分组字段默认会被保留；分组后的排序如果不指定，则按照先分组字段顺序排序，其他字段不做排序，除非指定结果排序。</p>
+<hr />
+<p>summarise function 是将多行结果计算后返回一行结果；分组后组别有多少个，则返回多少个结果。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender) %&gt;%<span class="st"> </span><span class="co"># 按性别分组</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">num =</span> <span class="kw">n</span>(), <span class="co"># 统计每个组别的记录数</span>
+            <span class="dt">avg_height =</span> <span class="kw">mean</span>(height), <span class="co"># 统计每个组别的平均身高</span>
+            <span class="dt">max_weight =</span> <span class="kw">max</span>(weight) <span class="co"># 统计每个组别的最大体重</span>
+            ) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(<span class="kw">desc</span>(num)) <span class="co"># 按照 num 倒序排列</span>
+<span class="co">#&gt; Source: local data frame [2 x 4]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   gender   num avg_height max_weight</span>
+<span class="co">#&gt;   &lt;fctr&gt; &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1     男    10       1.73         80</span>
+<span class="co">#&gt; 2     女     5       1.68         82</span></code></pre></div>
+<p>多个字段联合分组</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 如果分组有多个字段，则汇总结果是按照联合分组后统计的结果</span>
+employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender, grade) %&gt;%<span class="st"> </span><span class="co"># 按性别和成绩等级分组</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">num =</span> <span class="kw">n</span>(),
+            <span class="dt">avg_height =</span> <span class="kw">mean</span>(height), 
+            <span class="dt">max_weight =</span> <span class="kw">max</span>(weight) 
+            ) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(gender, <span class="kw">desc</span>(grade)) <span class="co"># grade 是有序因子，“优”大于“差”，desc(grade) 指定从优到差排列</span>
+<span class="co">#&gt; Source: local data frame [6 x 5]</span>
+<span class="co">#&gt; Groups: gender [2]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   gender  grade   num avg_height max_weight</span>
+<span class="co">#&gt;   &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1     男     优     1       1.74         75</span>
+<span class="co">#&gt; 2     男     良     4       1.71         70</span>
+<span class="co">#&gt; 3     男     中     5       1.73         80</span>
+<span class="co">#&gt; 4     女     优     2       1.69         82</span>
+<span class="co">#&gt; 5     女     良     2       1.67         54</span>
+<span class="co">#&gt; 6     女     中     1       1.70         53</span></code></pre></div>
+<p>SQL中在 group by 之后可以增加 having 字句用来对分组结果进行过滤。但在 dplyr 中没有对应 having 关键字的函数，因为该过程实际就是对分组汇总结果的条件筛选，直接增加一次 filter 的处理过程即可。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 如果分组有多个字段，则汇总结果是按照联合分组后统计的结果</span>
+employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender, grade) %&gt;%<span class="st"> </span><span class="co"># 按性别和成绩等级分组</span>
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">num =</span> <span class="kw">n</span>(),
+            <span class="dt">avg_height =</span> <span class="kw">mean</span>(height), 
+            <span class="dt">max_weight =</span> <span class="kw">max</span>(weight) 
+            ) %&gt;%
+<span class="st">  </span><span class="kw">filter</span>(num &gt;=<span class="st"> </span><span class="dv">2</span>) %&gt;%<span class="st"> </span><span class="co"># 筛选至少包含两名员工的分组，类似 having 关键字</span>
+<span class="st">  </span><span class="kw">arrange</span>(gender, <span class="kw">desc</span>(grade)) <span class="co"># grade 是有序因子，“优”大于“差”，desc(grade) 指定从优到差排列</span>
+<span class="co">#&gt; Source: local data frame [4 x 5]</span>
+<span class="co">#&gt; Groups: gender [2]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   gender  grade   num avg_height max_weight</span>
+<span class="co">#&gt;   &lt;fctr&gt; &lt;fctr&gt; &lt;int&gt;      &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1     男     良     4       1.71         70</span>
+<span class="co">#&gt; 2     男     中     5       1.73         80</span>
+<span class="co">#&gt; 3     女     优     2       1.69         82</span>
+<span class="co">#&gt; 4     女     良     2       1.67         54</span></code></pre></div>
+<hr />
+<p>window function 是将多行结果计算后返回同样行数的结果；分组后组别有多少个，则返回每个分组的行数相同的结果，所有分组行数的总和还是等于总数据表的行数。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">arrange</span>(gender, salary) %&gt;%<span class="st"> </span><span class="co"># 先按分组 gender 排序, 再按 salary 排序</span>
+<span class="st">  </span><span class="co"># 按分组 gender ，累计求和 salary，其中 salary 以按从小到大排序</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cumsum_salary =</span> <span class="kw">cumsum</span>(salary)) 
+<span class="co">#&gt; Source: local data frame [15 x 10]</span>
+<span class="co">#&gt; Groups: gender [2]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      name height weight islocal gender  grade   birthday salary  title</span>
+<span class="co">#&gt;    &lt;fctr&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;lgl&gt; &lt;fctr&gt; &lt;fctr&gt;     &lt;date&gt;  &lt;dbl&gt;  &lt;chr&gt;</span>
+<span class="co">#&gt; 1    张伟   1.65     60    TRUE     男     中 1990-01-25   7000 工程师</span>
+<span class="co">#&gt; 2  李元礼   1.81     80   FALSE     男     中 1992-06-14   7200 分析师</span>
+<span class="co">#&gt; 3  杨伯侨   1.74     75    TRUE     男     优 1991-07-01   7800 工程师</span>
+<span class="co">#&gt; 4  张伯仲   1.68     70    TRUE     男     良 1988-09-26   8000 分析师</span>
+<span class="co">#&gt; 5  况天佑   1.74     56   FALSE     男     良 1991-09-25   8800 分析师</span>
+<span class="co">#&gt; 6  孟轲舆   1.72     68   FALSE     男     良 1989-07-28   9000 工程师</span>
+<span class="co">#&gt; ..    ...    ...    ...     ...    ...    ...        ...    ...    ...</span>
+<span class="co">#&gt; Variables not shown: cumsum_salary &lt;dbl&gt;.</span></code></pre></div>
+<p>多个字段联合分组</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender, title) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># 先按第一个分组 gender 排序, 在按第二个分组 title排序，最后 salary 倒序</span>
+<span class="st">  </span><span class="kw">arrange</span>(gender, title, <span class="kw">desc</span>(salary)) %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="co"># 按分组 gender 和 title ，累计求和 salary，其中 salary 以按从大到小排序</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">cumsum_salary =</span> <span class="kw">cumsum</span>(salary)) 
+<span class="co">#&gt; Source: local data frame [15 x 10]</span>
+<span class="co">#&gt; Groups: gender, title [4]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      name height weight islocal gender  grade   birthday salary  title</span>
+<span class="co">#&gt;    &lt;fctr&gt;  &lt;dbl&gt;  &lt;dbl&gt;   &lt;lgl&gt; &lt;fctr&gt; &lt;fctr&gt;     &lt;date&gt;  &lt;dbl&gt;  &lt;chr&gt;</span>
+<span class="co">#&gt; 1  况天佑   1.74     56   FALSE     男     良 1991-09-25   8800 分析师</span>
+<span class="co">#&gt; 2  张伯仲   1.68     70    TRUE     男     良 1988-09-26   8000 分析师</span>
+<span class="co">#&gt; 3  李元礼   1.81     80   FALSE     男     中 1992-06-14   7200 分析师</span>
+<span class="co">#&gt; 4  宋子启   1.73     73    TRUE     男     中 1984-02-28  12000 工程师</span>
+<span class="co">#&gt; 5  沈约度   1.72     61    TRUE     男     良 1993-04-01  10000 工程师</span>
+<span class="co">#&gt; 6  陈淮阳   1.69     62    TRUE     男     中 1991-03-05   9600 工程师</span>
+<span class="co">#&gt; ..    ...    ...    ...     ...    ...    ...        ...    ...    ...</span>
+<span class="co">#&gt; Variables not shown: cumsum_salary &lt;dbl&gt;.</span></code></pre></div>
+</div>
+</div>
+<div id="summary-window-function" class="section level3">
+<h3><span class="header-section-number">3.2.3</span> summary &amp; window function</h3>
+<p>在 dplyr 中 Summary Function 是汇总函数，在 SQL 中也被成为 Aggregate Function，聚合函数。</p>
+<p>在 dplyr 中 Window Function 是窗口函数，在 SQL 中被称为 Analytic Function，分析函数。</p>
+<div class="figure">
+<img src="images/summary_function_and_window_function.png" alt="" />
+
+</div>
+<p>Summary Function 是将多行结果计算后汇总为一行，Window Function 是将多行结果计算后返回相同行数的结果。这个定义更倾向于对数据表来说。</p>
+<p>实际上，在 R 中使用对向量的计算描述更为合适。</p>
+<p>Summary Function 是那些在对向量计算后只返回一个值的结果，比如 <code>sum()</code> 函数。 这里的待计算的向量不一定是单个向量对象，可以是包含多几个向量运算的结果的向量，比如 max(log(x) - nchar(y))，其中 max() 就是 Summary Function。</p>
+<p>Window Function 是那些在对向量计算后返回相同长度的向量的函数，也就是向量化函数，包括初等数学函数，比如 log(), cumsum(), 也包括 字符串函数nchar()，甚至条件判断函数 ifelse()。重要的是不是函数的类型，是返回的结果。</p>
+<p>当对一个向量作用某个函数之后，返回结果是一个值（长度为一的向量）就是 Summary Function；返回的结果是与作用向量长度相同的向量，则是 Window Function。</p>
+<p>汇总函数和窗口函数，都可以在分组下使用；当然也可以在不分组的情况下使用，这时可以看做是只分为一组的特殊情况。</p>
+<div id="summary-function-" class="section level4">
+<h4><span class="header-section-number">3.2.3.1</span> summary function 汇总函数</h4>
+<p>在 base 中很多的统计函数都是 summarise function 有很多，比如</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(title) %&gt;%
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">min_height =</span> <span class="kw">min</span>(height), <span class="co"># min 最小值</span>
+            <span class="dt">max_weight =</span> <span class="kw">max</span>(weight), <span class="co"># max 最大值</span>
+            <span class="dt">avg_bmi =</span> <span class="kw">mean</span>(weight /<span class="st"> </span>height ^<span class="dv">2</span>), <span class="co"># mean 均值</span>
+            <span class="dt">median_salary =</span> <span class="kw">median</span>(salary), <span class="co"># meadin 中位数</span>
+            <span class="dt">var_salary =</span> <span class="kw">var</span>(salary), <span class="co"># var 方差</span>
+            <span class="dt">sd_salary =</span> <span class="kw">sd</span>(salary), <span class="co"># sd 标准差</span>
+            <span class="dt">iqr_salary =</span> <span class="kw">IQR</span>(salary) <span class="co"># IQR 四分位距</span>
+            )
+<span class="co">#&gt; Source: local data frame [2 x 8]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;    title min_height max_weight avg_bmi median_salary var_salary sd_salary</span>
+<span class="co">#&gt;    &lt;chr&gt;      &lt;dbl&gt;      &lt;dbl&gt;   &lt;dbl&gt;         &lt;dbl&gt;      &lt;dbl&gt;     &lt;dbl&gt;</span>
+<span class="co">#&gt; 1 分析师       1.62         80    20.6          8800    3606190      1899</span>
+<span class="co">#&gt; 2 工程师       1.65         82    23.6          9300    2297143      1516</span>
+<span class="co">#&gt; Variables not shown: iqr_salary &lt;dbl&gt;.</span></code></pre></div>
+<p>在 dplyr 中定义了一些常用的位置和计数相关的函数，比如</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender) %&gt;%
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">first_height =</span> <span class="kw">first</span>(height), <span class="co"># 第一个值</span>
+            <span class="dt">last_weight =</span> <span class="kw">last</span>(weight, <span class="dt">order_by =</span> grade), <span class="co"># 最后一个值，按照 grade 排序</span>
+            <span class="dt">nth_birthday =</span> <span class="kw">nth</span>(birthday, <span class="dt">n =</span> <span class="dv">3</span>), <span class="co"># 第 n 个值</span>
+            <span class="dt">employee_num =</span> <span class="kw">n</span>(), <span class="co"># 计数，可以使用 leghth(variable) 来替换，但需要一个 variable 参数</span>
+            <span class="dt">distinct_grade =</span> <span class="kw">n_distinct</span>(grade) <span class="co"># 排重计数</span>
+            )
+<span class="co">#&gt; Source: local data frame [2 x 6]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   gender first_height last_weight nth_birthday employee_num distinct_grade</span>
+<span class="co">#&gt;   &lt;fctr&gt;        &lt;dbl&gt;       &lt;dbl&gt;       &lt;date&gt;        &lt;int&gt;          &lt;int&gt;</span>
+<span class="co">#&gt; 1     男         1.73          75   1989-07-28           10              3</span>
+<span class="co">#&gt; 2     女         1.66          82   1985-05-10            5              3</span>
+<span class="co"># 其中 first, last , nth 都是有可选参数 order_by </span>
+<span class="co"># 注意，n() 是没有参数的</span></code></pre></div>
+<p>汇总函数是可以自定义的。</p>
+<p>所有通过对多个元素的向量，计算后返回一个值的函数，都是 summarise function 。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">
+<span class="co"># 定义函数</span>
+eldest_age_calc &lt;-<span class="st"> </span>function(x) {
+  <span class="kw">library</span>(lubridate) <span class="co"># 载入 lubridate ，利用 year() 函数</span>
+  max_age &lt;-<span class="st"> </span><span class="kw">max</span>(<span class="kw">year</span>(<span class="kw">Sys.Date</span>()) -<span class="st"> </span><span class="kw">year</span>(x))
+  <span class="kw">return</span>(max_age)
+}
+
+employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender) %&gt;%
+<span class="st">  </span><span class="kw">summarise</span>(<span class="dt">eldest_age =</span> <span class="kw">eldest_age_calc</span>(birthday), <span class="co"># 应用自定义函数</span>
+            <span class="co"># 计算过程可以用表达式书写，如果过程不太长不影响阅读，则直接书写</span>
+            <span class="co"># lubridate::year 是使用 lubridate 包中 year() 而不用加载这个函数包</span>
+            <span class="dt">youngest_age =</span> <span class="kw">min</span>(lubridate::<span class="kw">year</span>(<span class="kw">Sys.Date</span>()) -<span class="st"> </span>lubridate::<span class="kw">year</span>(birthday)), 
+            <span class="dt">best_grade =</span> <span class="kw">first</span>(grade, <span class="dt">order_by =</span> <span class="kw">desc</span>(grade)) <span class="co"># 分组中最佳成绩（有序因子按优到差排序）</span>
+            )
+<span class="co">#&gt; Source: local data frame [2 x 4]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;   gender eldest_age youngest_age best_grade</span>
+<span class="co">#&gt;   &lt;fctr&gt;      &lt;dbl&gt;        &lt;dbl&gt;     &lt;fctr&gt;</span>
+<span class="co">#&gt; 1     男         32           23         优</span>
+<span class="co">#&gt; 2     女         31           24         优</span></code></pre></div>
+</div>
+<div id="window-function-" class="section level4">
+<h4><span class="header-section-number">3.2.3.2</span> window function 窗口函数</h4>
+<p>在数据分析的SQL取数过程中，window function / analytic function 使用的相对少一些，算是比较高级的用法，就是那些带有 over() 关键字的函数，还经常与分组和排序配合使用。</p>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">-- Analytic Function Syntax</span>
+ANALYTIC_FUNCTION( argument<span class="dv">-1</span>, ..., argument-n )   
+  <span class="kw">OVER</span>( [ window_partition_clause ]
+        [ window_order_clause ]) </code></pre></div>
+<p>在 dplyr 中介绍文档中，作者还专门书写了一个章节的内容来讲 window functions。</p>
+<p>窗口函数相对来说比较高级的分析函数，用法也相比复杂，这里要重点讲解。</p>
+<p>对数据分析师来说，从 SQL 转到 R 来做进一步的数据处理语言，那是因为在 R 语言中，相对 SQL 来说更容易编写处理分析函数。</p>
+<p>在数据库系统中，分析师并非做系统开发，对 SQL 进一步编程能力相对匮乏，且多数时候也没有编写自定义函数的权限。</p>
+<p>窗口函数，实际上就是用来处理列的函数，并且返回长度相同的列，多数情况下就是多数据做预处理。</p>
+<p>窗口函数在 dplyr 的介绍文档中，是不包括哪些与行处理没有关系的普通函数的，比如 nchar() 统计字符个数等函数，可以说是狭义上的窗口函数。</p>
+<p>下面重点介绍的就是狭义的窗口函数，这和 SQL 中的分析函数是想对应的，它们处理的都是相同的问题，只是处于在 R 和 SQL 两个不同的环境中。</p>
+<p>因为普通函数太普通了，这里都没有介绍的必要。</p>
+<p>从宏观角度来看，窗口函数可以分为三大类：</p>
+<ul>
+<li>秩序和排序函数: <code>row_number()</code>, <code>min_rank()</code>, <code>dense_rank()</code>, <code>cume_dist()</code>, <code>percent_rank()</code>, <code>ntile()</code></li>
+<li>偏移函数: <code>lead()</code> 和 <code>lag()</code></li>
+<li>累积的汇总函数:<code>cumsum()</code>, <code>cummean()</code>, <code>cummin()</code>, <code>cummax()</code>,<code>cumprod()</code>, <code>cumall()</code>, <code>cumany()</code>, <code>pmin()</code>, <code>pmax()</code></li>
+</ul>
+<div id="ranking-functions" class="section level5">
+<h5><span class="header-section-number">3.2.3.2.1</span> Ranking functions</h5>
+<p>让我们先来构造一个简单的向量，应用排序函数，来辨析它们之间的区别。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)
+
+<span class="kw">row_number</span>(x)
+<span class="co">#&gt; [1] 1 2 3 4 5</span>
+## row_number 排序并对每个只从小到达给定一个自增的序号，即使大小顺序相同
+
+<span class="kw">min_rank</span>(x)
+<span class="co">#&gt; [1] 1 1 3 3 3</span>
+## min_rank 排序，对大小相同的值给相同的排名值，跳过中间的序号，从后面开始排次
+## 如果有两个并列第一，则排名中没有第二，之后从第三开始
+
+x &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">2</span>, <span class="dv">2</span>, <span class="dv">2</span>)
+<span class="co">#&gt; [1] 1 1 2 2 2</span>
+## dense_rank 排序，对大小相同的值给相同的排名值，不跳过中间的序号，继续排名次
+## 排名可以有并列，但名次序号不跳过</code></pre></div>
+<p>row_number 更多的是排序的序号，类似于元素排序后是几个序号（数据表则为行号）。</p>
+<p>rank 更多的是排名次（<code>秩</code>），可以有并列名次（相同排名）； min 和 dense 的区别在于名次是有间隔的还是连续不间隔的。</p>
+<p>默认排序都是从小到大、从低到高，正序排列；如果要倒序，则可使用 <code>desc()</code>，用法与 <code>arrage()</code> 函数中一致。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(gender) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">employee_age =</span> <span class="kw">row_number</span>(birthday), <span class="co"># 年龄从大到小</span>
+         <span class="dt">rank_salary =</span> <span class="kw">min_rank</span>(<span class="kw">desc</span>(salary)) <span class="co"># 薪资从高到低</span>
+         ) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(gender, employee_age, <span class="kw">desc</span>(rank_salary)) %&gt;%
+<span class="st">  </span><span class="kw">select</span>(-(<span class="dv">2</span>:<span class="dv">4</span>))
+<span class="co">#&gt; Source: local data frame [15 x 8]</span>
+<span class="co">#&gt; Groups: gender [2]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;      name gender  grade   birthday salary  title employee_age rank_salary</span>
+<span class="co">#&gt;    &lt;fctr&gt; &lt;fctr&gt; &lt;fctr&gt;     &lt;date&gt;  &lt;dbl&gt;  &lt;chr&gt;        &lt;int&gt;       &lt;int&gt;</span>
+<span class="co">#&gt; 1  宋子启     男     中 1984-02-28  12000 工程师            1           1</span>
+<span class="co">#&gt; 2  张伯仲     男     良 1988-09-26   8000 分析师            2           7</span>
+<span class="co">#&gt; 3  孟轲舆     男     良 1989-07-28   9000 工程师            3           4</span>
+<span class="co">#&gt; 4    张伟     男     中 1990-01-25   7000 工程师            4          10</span>
+<span class="co">#&gt; 5  赵蜚廉     男     中 1990-08-08   9000 工程师            5           4</span>
+<span class="co">#&gt; 6  陈淮阳     男     中 1991-03-05   9600 工程师            6           3</span>
+<span class="co">#&gt; ..    ...    ...    ...        ...    ...    ...          ...         ...</span></code></pre></div>
+</div>
+</div>
+<div id="lag-lead" class="section level4">
+<h4><span class="header-section-number">3.2.3.3</span> lag &amp; lead</h4>
+<p><code>lag()</code> 和<code>lead()</code> 函数，分别获取当前行所对应的前/后若干个偏移量的值，分别有四个参数：</p>
+<ul>
+<li>x 是列（变量）</li>
+<li>n 是偏移量（offset），为正整数，默认为 1，也就是前一个值，或者后一个值</li>
+<li>default 是超出记录窗口时的默认值，默认是 NA</li>
+<li>order_by 是排序，默认为 NULL，也就是按当前的顺序取偏移值</li>
+</ul>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">x &lt;-<span class="st"> </span><span class="dv">1</span>:<span class="dv">5</span>
+
+<span class="kw">lag</span>(x)
+<span class="co">#&gt; [1] NA  1  2  3  4</span>
+
+<span class="kw">lead</span>(x)
+<span class="co">#&gt; [1]  2  3  4  5 NA</span>
+
+<span class="kw">lag</span>(x, <span class="dt">n =</span> <span class="dv">2</span>, <span class="dt">default =</span> <span class="dv">0</span>)
+<span class="co">#&gt; [1] 0 0 1 2 3</span>
+<span class="co"># 向前 2 格取值，如果不存在则默认为 0</span>
+
+<span class="kw">lead</span>(x, <span class="dt">n =</span> <span class="dv">3</span>, <span class="dt">default =</span> <span class="dv">999</span>)
+[<span class="dv">1</span>]   <span class="dv">4</span>   <span class="dv">5</span> <span class="dv">999</span> <span class="dv">999</span> <span class="dv">999</span>
+<span class="co"># 向后 3 格取值，如果不存在则默认为 999</span></code></pre></div>
+<p>通常来说， <code>lag</code> 和 <code>lead</code> 的偏移量都是 1，用来做差异分析。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="co"># 先排序</span>
+<span class="st">  </span><span class="kw">arrange</span>(salary) %&gt;%
+<span class="st">  </span><span class="co"># 后一个值与当前值相减，也就是计算前后两者的差异</span>
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">salary_diff =</span> <span class="kw">lead</span>(salary) -<span class="st"> </span>salary) %&gt;%
+<span class="st">  </span><span class="kw">select</span>(name, salary, salary_diff)
+<span class="co">#&gt;      name salary salary_diff</span>
+<span class="co">#&gt; 1    张伟   7000         200</span>
+<span class="co">#&gt; 2  李元礼   7200         600</span>
+<span class="co">#&gt; 3  杨伯侨   7800         200</span>
+<span class="co">#&gt; 4  张伯仲   8000         800</span>
+<span class="co">#&gt; 5  陈梦妍   8800           0</span>
+<span class="co">#&gt; 6  况天佑   8800         200</span>
+<span class="co">#&gt; 7  孟轲舆   9000           0</span>
+<span class="co">#&gt; 8  赵蜚廉   9000         500</span>
+<span class="co">#&gt; 9  王雪梅   9500         100</span>
+<span class="co">#&gt; 10 陈淮阳   9600         400</span>
+<span class="co">#&gt; 11 沈约度  10000           0</span>
+<span class="co">#&gt; 12 马小玲  10000        1000</span>
+<span class="co">#&gt; 13 王珍珍  11000        1000</span>
+<span class="co">#&gt; 14 宋子启  12000         800</span>
+<span class="co">#&gt; 15   蒋欣  12800          NA</span></code></pre></div>
+</div>
+<div id="cumulative-aggregates-" class="section level4">
+<h4><span class="header-section-number">3.2.3.4</span> Cumulative aggregates 累计聚合函数</h4>
+<p>累计聚合函数用得最多的是 <code>cumsum()</code> 累计求和，以及 <code>cumsum()</code> 累计求均值。</p>
+<p>其他的累计聚合函数：累计求最大<code>cummax()</code>、累计求最小<code>cummin()</code>、累计乘积<code>cumprod()</code>等。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">employee %&gt;%
+<span class="st">  </span><span class="kw">group_by</span>(title) %&gt;%
+<span class="st">  </span><span class="kw">arrange</span>(title, salary) %&gt;%
+<span class="st">  </span><span class="kw">mutate</span>(<span class="dt">salary_cumsum =</span> <span class="kw">cumsum</span>(salary),
+         <span class="co"># mutate 中可以使用汇总函数 sum</span>
+         <span class="co"># 每个分组得到一个结果</span>
+         <span class="co"># 遵循循环补齐规则填充到每个组等长的向量</span>
+         <span class="dt">salary_total =</span> <span class="kw">sum</span>(salary), 
+         <span class="dt">salary_pct =</span> salary /<span class="st"> </span>salary_total
+         ) %&gt;%
+<span class="st">  </span><span class="kw">select</span>(name, salary, salary_cumsum, salary_total, salary_pct)
+<span class="co">#&gt; Adding missing grouping variables: `title`</span>
+<span class="co">#&gt; Source: local data frame [15 x 6]</span>
+<span class="co">#&gt; Groups: title [2]</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt;     title   name salary salary_cumsum salary_total salary_pct</span>
+<span class="co">#&gt;     &lt;chr&gt; &lt;fctr&gt;  &lt;dbl&gt;         &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;</span>
+<span class="co">#&gt; 1  分析师 李元礼   7200          7200        66100      0.109</span>
+<span class="co">#&gt; 2  分析师 张伯仲   8000         15200        66100      0.121</span>
+<span class="co">#&gt; 3  分析师 陈梦妍   8800         24000        66100      0.133</span>
+<span class="co">#&gt; 4  分析师 况天佑   8800         32800        66100      0.133</span>
+<span class="co">#&gt; 5  分析师 王雪梅   9500         42300        66100      0.144</span>
+<span class="co">#&gt; 6  分析师 王珍珍  11000         53300        66100      0.166</span>
+<span class="co">#&gt; ..    ...    ...    ...           ...          ...        ...</span></code></pre></div>
+</div>
+</div>
+<div id="-join--combine" class="section level3">
+<h3><span class="header-section-number">3.2.4</span> 多表操作 join 和 combine</h3>
+<div id="mutating-joins" class="section level4">
+<h4><span class="header-section-number">3.2.4.1</span> mutating joins</h4>
+<p>base 中的 <code>merge()</code> 函数可以用来合并数据框，但使用起来并不是那么顺手。</p>
+<p>dplyr 中提供了有关 join 的函数来实现类似 SQL 中表连接功能。</p>
+<div class="figure">
+<img src="images/join.png" alt="" />
+
+</div>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">a &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="dt">x2 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+b &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;D&quot;</span>), <span class="dt">x3 =</span> <span class="kw">c</span>(<span class="st">&quot;T&quot;</span>, <span class="st">&quot;F&quot;</span>, <span class="st">&quot;T&quot;</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># left join </span>
+<span class="kw">left_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>) <span class="co"># by 是关联字段；关联不到的值变为 NA</span>
+<span class="co">#&gt;   x1 x2   x3</span>
+<span class="co">#&gt; 1  A  1    T</span>
+<span class="co">#&gt; 2  B  2    F</span>
+<span class="co">#&gt; 3  C  3 &lt;NA&gt;</span>
+
+<span class="co"># 如果 by 省略则按相同变量名称来关联，但会给出一个警告信息</span>
+<span class="kw">left_join</span>(a, b)
+<span class="co">#&gt; Joining, by = &quot;x1&quot;</span>
+<span class="co">#&gt;   x1 x2   x3</span>
+<span class="co">#&gt; 1  A  1    T</span>
+<span class="co">#&gt; 2  B  2    F</span>
+<span class="co">#&gt; 3  C  3 &lt;NA&gt;</span>
+
+
+<span class="co"># right join</span>
+<span class="kw">right_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>) <span class="co"># 右连接的结果是 b 在前</span>
+<span class="co">#&gt;   x1 x2 x3</span>
+<span class="co">#&gt; 1  A  1  T</span>
+<span class="co">#&gt; 2  B  2  F</span>
+<span class="co">#&gt; 3  D NA  T</span>
+
+<span class="co"># inner join</span>
+<span class="co"># 在 SQL 中 inner join 可以省略简化为 join, 但在 R 中不能省略，没有定义 join() 函数</span>
+<span class="kw">inner_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>) 
+<span class="co">#&gt;   x1 x2 x3</span>
+<span class="co">#&gt; 1  A  1  T</span>
+<span class="co">#&gt; 2  B  2  F</span>
+
+<span class="co"># full join</span>
+<span class="kw">full_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>) <span class="co"># 包含两个表中都有的值</span>
+<span class="co">#&gt;   x1 x2   x3</span>
+<span class="co">#&gt; 1  A  1    T</span>
+<span class="co">#&gt; 2  B  2    F</span>
+<span class="co">#&gt; 3  C  3 &lt;NA&gt;</span>
+<span class="co">#&gt; 4  D NA    T</span></code></pre></div>
+<p>表连接中字段名称不同时，可以在 by 中指定对应关系。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">authors &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">surname =</span> <span class="kw">I</span>(<span class="kw">c</span>(<span class="st">&quot;Tukey&quot;</span>, <span class="st">&quot;Venables&quot;</span>, <span class="st">&quot;Tierney&quot;</span>, <span class="st">&quot;Ripley&quot;</span>, <span class="st">&quot;McNeil&quot;</span>)),
+    <span class="dt">nationality =</span> <span class="kw">c</span>(<span class="st">&quot;US&quot;</span>, <span class="st">&quot;Australia&quot;</span>, <span class="st">&quot;US&quot;</span>, <span class="st">&quot;UK&quot;</span>, <span class="st">&quot;Australia&quot;</span>),
+    <span class="dt">deceased =</span> <span class="kw">c</span>(<span class="st">&quot;yes&quot;</span>, <span class="kw">rep</span>(<span class="st">&quot;no&quot;</span>, <span class="dv">4</span>)))
+books &lt;-<span class="st"> </span><span class="kw">data.frame</span>(
+    <span class="dt">name =</span> <span class="kw">I</span>(<span class="kw">c</span>(<span class="st">&quot;Tukey&quot;</span>, <span class="st">&quot;Venables&quot;</span>, <span class="st">&quot;Tierney&quot;</span>,
+             <span class="st">&quot;Ripley&quot;</span>, <span class="st">&quot;Ripley&quot;</span>, <span class="st">&quot;McNeil&quot;</span>, <span class="st">&quot;R Core&quot;</span>)),
+    <span class="dt">title =</span> <span class="kw">c</span>(<span class="st">&quot;Exploratory Data Analysis&quot;</span>,
+              <span class="st">&quot;Modern Applied Statistics ...&quot;</span>,
+              <span class="st">&quot;LISP-STAT&quot;</span>,
+              <span class="st">&quot;Spatial Statistics&quot;</span>, <span class="st">&quot;Stochastic Simulation&quot;</span>,
+              <span class="st">&quot;Interactive Data Analysis&quot;</span>,
+              <span class="st">&quot;An Introduction to R&quot;</span>),
+    <span class="dt">other.author =</span> <span class="kw">c</span>(<span class="ot">NA</span>, <span class="st">&quot;Ripley&quot;</span>, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="ot">NA</span>, <span class="ot">NA</span>,
+                     <span class="st">&quot;Venables &amp; Smith&quot;</span>))
+
+<span class="co"># by 中两个变量的名称，与join中表之间有对应关系</span>
+<span class="co"># by 中第一个变量对应的是第一个表</span>
+<span class="kw">inner_join</span>(authors, books, <span class="dt">by =</span> <span class="kw">c</span>(<span class="st">&quot;surname&quot;</span> =<span class="st"> &quot;name&quot;</span>), <span class="dt">copy =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt;    surname nationality deceased                         title other.author</span>
+<span class="co">#&gt; 1    Tukey          US      yes     Exploratory Data Analysis         &lt;NA&gt;</span>
+<span class="co">#&gt; 2 Venables   Australia       no Modern Applied Statistics ...       Ripley</span>
+<span class="co">#&gt; 3  Tierney          US       no                     LISP-STAT         &lt;NA&gt;</span>
+<span class="co">#&gt; 4   Ripley          UK       no            Spatial Statistics         &lt;NA&gt;</span>
+<span class="co">#&gt; 5   Ripley          UK       no         Stochastic Simulation         &lt;NA&gt;</span>
+<span class="co">#&gt; 6   McNeil   Australia       no     Interactive Data Analysis         &lt;NA&gt;</span>
+
+
+<span class="co"># 用不同变量名之间来关联看起来有点复杂</span>
+<span class="co"># 可以先将关联的字段名称改为相同的再关联会显得容易些</span>
+books %&gt;%<span class="st"> </span>
+<span class="st">  </span><span class="kw">rename</span>(<span class="dt">surname =</span> name) %&gt;%
+<span class="st">  </span><span class="kw">inner_join</span>(authors, <span class="dt">copy =</span> <span class="ot">TRUE</span>)
+<span class="co">#&gt; Joining, by = &quot;surname&quot;</span>
+<span class="co">#&gt;    surname                         title other.author nationality deceased</span>
+<span class="co">#&gt; 1    Tukey     Exploratory Data Analysis         &lt;NA&gt;          US      yes</span>
+<span class="co">#&gt; 2 Venables Modern Applied Statistics ...       Ripley   Australia       no</span>
+<span class="co">#&gt; 3  Tierney                     LISP-STAT         &lt;NA&gt;          US       no</span>
+<span class="co">#&gt; 4   Ripley            Spatial Statistics         &lt;NA&gt;          UK       no</span>
+<span class="co">#&gt; 5   Ripley         Stochastic Simulation         &lt;NA&gt;          UK       no</span>
+<span class="co">#&gt; 6   McNeil     Interactive Data Analysis         &lt;NA&gt;   Australia       no</span></code></pre></div>
+<hr />
+</div>
+<div id="filtering-joins" class="section level4">
+<h4><span class="header-section-number">3.2.4.2</span> filtering joins</h4>
+<p>filtering join 只是将关联作为过滤条件，但不要被关联表的变量。</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># 半连接</span>
+<span class="co"># 等价于 select a.* from a inner join b on a.x1 = b.x1</span>
+<span class="kw">semi_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>)
+<span class="co">#&gt;   x1 x2</span>
+<span class="co">#&gt; 1  A  1</span>
+<span class="co">#&gt; 2  B  2</span>
+
+<span class="co"># 反连接</span>
+<span class="co"># 等价于 select a.* from a left join b on a.x1 = b.x1 where b.x3 is null</span>
+<span class="kw">anti_join</span>(a, b, <span class="dt">by =</span> <span class="st">&quot;x1&quot;</span>)
+<span class="co">#&gt;   x1 x2</span>
+<span class="co">#&gt; 1  C  3</span></code></pre></div>
+<hr />
+</div>
+</div>
+<div id="-combine" class="section level3">
+<h3><span class="header-section-number">3.2.5</span> 合并 combine</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="st">&quot;A&quot;</span>, <span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>), <span class="dt">x2 =</span> <span class="kw">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+z &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="st">&quot;B&quot;</span>, <span class="st">&quot;C&quot;</span>, <span class="st">&quot;D&quot;</span>), <span class="dt">x2 =</span> <span class="kw">c</span>(<span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>), <span class="dt">stringsAsFactors =</span> <span class="ot">FALSE</span>)
+
+<span class="co"># 并集(结果合并) </span>
+<span class="co"># 类似于 SQL 中 union all</span>
+<span class="kw">rbind</span>(y, z)
+<span class="co">#&gt;   x1 x2</span>
+<span class="co">#&gt; 1  A  1</span>
+<span class="co">#&gt; 2  B  2</span>
+<span class="co">#&gt; 3  C  3</span>
+<span class="co">#&gt; 4  B  2</span>
+<span class="co">#&gt; 5  C  3</span>
+<span class="co">#&gt; 6  D  4</span>
+
+<span class="co"># 并集(结果排重)</span>
+<span class="co"># 类似于 SQL 中 union</span>
+<span class="kw">union</span>(y, z)
+<span class="co">#&gt; [[1]]</span>
+<span class="co">#&gt; [1] &quot;A&quot; &quot;B&quot; &quot;C&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[2]]</span>
+<span class="co">#&gt; [1] 1 2 3</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[3]]</span>
+<span class="co">#&gt; [1] &quot;B&quot; &quot;C&quot; &quot;D&quot;</span>
+<span class="co">#&gt; </span>
+<span class="co">#&gt; [[4]]</span>
+<span class="co">#&gt; [1] 2 3 4</span>
+
+<span class="co"># 交集 </span>
+<span class="co"># 类似于 SQL 中 intersect </span>
+<span class="kw">intersect</span>(y, z)
+<span class="co">#&gt; data frame with 0 columns and 0 rows</span>
+
+<span class="co"># 差集</span>
+<span class="co"># 类似于 SQL 中 minus</span>
+<span class="kw">setdiff</span>(y, z)
+<span class="co">#&gt;   x1 x2</span>
+<span class="co">#&gt; 1  A  1</span>
+<span class="co">#&gt; 2  B  2</span>
+<span class="co">#&gt; 3  C  3</span></code></pre></div>
+
+<div id="refs" class="references">
+
+</div>
+</div>
+</div>
+</div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+<a href="section-2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+
+
+<script src="libs/gitbook-2.6.7/js/app.min.js"></script>
+<script src="libs/gitbook-2.6.7/js/lunr.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-search.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-sharing.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-fontsettings.js"></script>
+<script src="libs/gitbook-2.6.7/js/plugin-bookdown.js"></script>
+<script src="libs/gitbook-2.6.7/js/jquery.highlight.js"></script>
+<script>
+require(["gitbook"], function(gitbook) {
+gitbook.start({
+"sharing": {
+"facebook": true,
+"twitter": true,
+"google": false,
+"weibo": false,
+"instapper": false,
+"vk": false,
+"all": ["facebook", "google", "twitter", "weibo", "instapaper"]
+},
+"fontsettings": {
+"theme": "white",
+"family": "sans",
+"size": 2
+},
+"edit": {
+"link": "https://github.com/lixionghui/r4da/edit/master/data_manipulation.Rmd",
+"text": "编辑"
+},
+"download": ["r4da.pdf", "r4da.epub", "r4da.mobi"],
+"toc": {
+"collapse": "subsection"
+}
+});
+});
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    if (location.protocol !== "file:" && /^https?:/.test(script.src))
+      script.src  = script.src.replace(/^https?:/, '');
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+</body>
+
+</html>

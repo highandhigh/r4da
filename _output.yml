@@ -1,0 +1,26 @@
+bookdown::gitbook:
+  css: style.css
+  includes:
+    in_header: growingio.js
+  config:
+    toc:
+      collapse: subsection
+      before: |
+        <li><a href="./">利用R语言进行数据分析</a></li>
+      after: |
+        <li><a href="http://lixionghui.com/">返回 lixionghui.com</a></li>
+    download: [pdf, epub, mobi]
+    edit:
+      link: https://github.com/lixionghui/r4da/edit/master/%s
+      text: "编辑"
+bookdown::html_chapters:
+  css: [css/style.css, css/toc.css]
+bookdown::pdf_book:
+  includes:
+    in_header: preamble.tex
+  keep_tex: yes
+  latex_engine: xelatex
+  citation_package: natbib
+bookdown::epub_book:
+  stylesheet: css/style.css
+

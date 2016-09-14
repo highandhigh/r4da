@@ -1,0 +1,29 @@
+book_filename: "r4da"
+chapter_name: !expr "function(i) paste0('第', i, '章')"
+before_chapter_script: "_common.R"
+new_session: yes
+
+rmd_files: [
+ "index.Rmd",
+
+ "data_structure.Rmd",
+ "vector.Rmd",
+ "matrix.Rmd",
+ "data_frame.Rmd",
+ "list.Rmd",
+ "special_values.Rmd",
+ "mode_typeof_class.Rmd",
+
+ "functional_programming.Rmd",
+ "base_functions.Rmd",
+ "custom_function.Rmd",
+ "extension_packages.Rmd",
+
+ "data_manipulation.Rmd",
+ "magrittr.Rmd",
+ "dplyr.Rmd",
+]
+repo: https://github.com/lixionghui/r4da/
+output_dir: "_book"
+clean: ["packages.bib", "bookdown.bbl"]
+

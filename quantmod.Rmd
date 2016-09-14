@@ -1,0 +1,287 @@
+---
+title: "chartSeries"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+```{r}
+library(quantmod)
+library(magrittr)
+```
+
+## ETL类函数
+
+
+
+* getSymbols() 获取上市公司股票的日交易数据
+
+参数
+
+* Symbols 上市股票代码
+* src 数据源，默认是 "yahoo" （雅虎财经的股票数据接口）
+* from 和 to 是交易日起止日期
+
+国外股票交易市场数据
+
+```{r, eval=FALSE}
+## APPLE （纽交所）
+getSymbols(Symbols = "AAPL", src = "yahoo", from = "2013-08-20", to = "2013-09-02")
+chartSeries(AAPL)
+```
+
+
+国内个股股票数据
+```{r, eval=FALSE}
+
+## 贵州茅台（上交所）
+setSymbolLookup(GZMT=list(name='600519.ss',src='yahoo'))
+getSymbols("GZMT")
+chartSeries(GZMT)
+
+## 万科A （深交所）
+setSymbolLookup(WK=list(name='000002.sz',src='yahoo'))
+getSymbols("WK")
+chartSeries(WK)
+
+
+
+## 长江实业（港交所）
+setSymbolLookup(CJSY=list(name="00001.hk",src="yahoo"))
+getSymbols("CJSY") # The requested URL returned error: 404 Not Found
+chartSeries(CJSY)
+```
+
+国内股票指数
+```{r}
+getSymbols("^SSEC") ## 上证指数
+# getSymbols("000001.ss") ## 上证指数
+
+chartSeries(SSEC, up.col='red', dn.col='green', TA="addVo(); addMACD(); addSMA(n=10)")
+```
+
+
+getDividends() 获取上市公司的股息数据
+getFinancials() 获取上市公司的财务报表
+getFX() 获取汇率数据
+getMetals() 获取重金属交易数据
+getSplits() 获取上市公司的拆股数据
+getOptionChain() 获取期权交易数据
+getQuote() 获取即时的网络报价
+
+## 涨跌红绿
+
+K线图中默认的上涨的颜色是绿色，下跌是绿色。可以通过绘图参数修改。
+
+* `up.col` 上涨颜色，红色的颜色值是 "red"
+* `dn.col` 下跌颜色，绿色的颜色值是 "green"
+
+```{r, echo=FALSE}
+chartSeries(SSEC, up.col = "red", dn.col = "green")
+```
+
+默认背景是黑色，可以修改为白色：
+
+* `theme` 背景主题，可以修改为白色 "white"
+
+```{r, echo=FALSE}
+chartSeries(SSEC, up.col = "red", dn.col = "green", theme = "white")
+```
+
+## Technical Analysis 技术分析
+
+* TA 如果为 NULL，则删除额外添加的指标，只保留原始的时间序列图
+
+```{r, echo=FALSE}
+
+
+# TA = NULL，则默认的成交量和最近一个交易日的收盘价两个信息不会再显示
+# 绘制完全干净的数据图
+chartSeries(SSEC, up.col = "red", dn.col = "green",  TA = NULL)
+
+chartSeries(SSEC, up.col = "red", dn.col = "green",  TA = "addVo();addBBands();addCCI()")
+```
+
+更多技术分析指标参考文档 (http://www.quantmod.com/examples/charting/)
+
+## 数据处理 (分析类函数)
+
+
+(http://www.quantmod.com/examples/data/)
+
+### The OHLC Basics
+
+* Op,Hi,Lo,Cl,Vo,Ad - do pretty much what they say - extract the columns Open, High, Low, Close, Volume, and Adjusted (Yahoo)
+* is.OHLC, has.OHLC, has.Op,has.Cl,has.Hi,has.Lo,has.Ad, and has.Vo - fairly obvious
+* seriesHi and seriesLo
+
+
+
+#### 检测数据 is族函数 has族函数
+
+```{r}
+# 判断某数据是否是某类型的数据
+is.OHLC(SSEC) # 是否 OHLC 对象
+is.OHLCV(SSEC) # 是否 OHLCV 对象
+is.HLC(SSEC) # 是否 HLC 对象
+
+# 检查数据里面是否包含某些类型的数据（多类数据）
+has.OHLCV(SSEC) # 是否（分别）包含 OHLCV 数据
+has.OHLC(SSEC) # 是否（分别）包含 OHLC 数据
+has.HLC(SSEC) # 是否（分别）包含 HLC 数据
+
+# 检查数据里面是否包含某类型的数据
+has.Op(SSEC) # 是否包含 开盘价
+has.Hi(SSEC) # 是否包含 最高价
+has.Lo(SSEC) # 是否包含 最低价
+has.Cl(SSEC) # 是否包含 收盘价
+has.Vo(SSEC) # 是否包含 成交量
+has.Ad(SSEC) # 是否包含 调整价格
+```
+
+
+## Extract and Transform OHLC Time-Series Columns 提取数据的函数
+
+### 列名函数
+
+```{r}
+# 提取数据
+Op(SSEC)  %>% tail() # 开盘价
+Hi(SSEC)  %>% tail() # 最高价
+Lo(SSEC)  %>% tail() # 最低价
+Cl(SSEC)  %>% tail() # 收盘价
+Vo(SSEC)  %>% tail() # 成交量
+Ad(SSEC)  %>% tail() # 调整价格
+
+HLC(SSEC)  %>% tail() # 最高价 最低价 收盘价
+OHLC(SSEC)  %>% tail() # 开盘价 最高价 最低价 收盘价
+OHLCV(SSEC) %>% tail() # 开盘价 最高价 最低价 收盘价 成交量
+```
+
+
+### series族函数
+
+```{r}
+# 整个时间序列中最高点那天的数据
+seriesHi(SSEC)
+
+# 整个时间序列中最高点那天的数据
+seriesLo(SSEC)
+```
+
+```{r}
+# 后一日交易数据与前一交易日相比是否增长
+seriesIncr(SSEC, thresh = 0, diff. = 1L) %>% tail()
+
+# 后一日交易数据与前一交易日相比是否下降
+seriesDecr(SSEC, thresh = 0, diff. = 1L) %>% tail()
+```
+
+### 计算变化率 Delt
+
+**用法**
+
+```{r, eval=FALSE}
+Delt(x1, x2 = NULL, k = 0, type = c("arithmetic", "log"))
+```
+
+**参数**
+
+* 如果计算对象只有 x1，则计算的对象就是后一个元素与前一个元素的变化率。
+* 如果计算对象有 x1 和 x2，则计算的对象就是两个对应元素的变化率，后者相对前者。
+* k 偏移量，当计算对象只有 x1 的时候默认是 1
+* type 计算类型，有两种，"arithmetic" 是算术计算，公式是 Lag = (x2(t) - x1(t-k))/x1(t-k)，默认；"log" 是对数计算，公式是 Lag = log(x2(t)/x1(t-k))
+
+
+```{r}
+Stock.Open <- c(102.25,102.87,102.25,100.87,103.44,103.87,103.00)
+Stock.Close <- c(102.12,102.62,100.12,103.00,103.87,103.12,105.12)
+
+Delt(Stock.Open)                    #one period pct. price change
+Delt(Stock.Open, k = 1)                #same
+Delt(Stock.Open, type = 'arithmetic')  #using arithmetic differences (default)
+Delt(Stock.Open, type = 'log')         #using log differences
+
+Delt(Stock.Open, Stock.Close)        #Open to Close pct. change
+Delt(Stock.Open, Stock.Close, k=0:2)  #...for 0,1, and 2 periods
+```
+
+```{r}
+OpCl(SSEC) %>% tail() # Delt(Op(x), Cl(x))
+ClCl(SSEC) %>% tail() # Delt(Cl(x))
+HiCl(SSEC) %>% tail() # Delt(Hi(x), Cl(x))
+LoCl(SSEC) %>% tail() # Delt(Lo(x), Cl(x))
+LoHi(SSEC) %>% tail() # Delt(Lo(x), Hi(x))
+OpHi(SSEC) %>% tail() # Delt(Op(x), Hi(x))
+OpLo(SSEC) %>% tail() # Delt(Op(x), Lo(x))
+OpOp(SSEC) %>% tail() # Delt(Op(x))
+```
+
+### 计算变化量 diff
+
+`diff()`函数，计算向量中后一个元素与前一个元素的差值。
+
+```{r}
+Stock.Open <- c(102.25,102.87,102.25,100.87,103.44,103.87,103.00)
+diff(Stock.Open) 
+
+diff(Stock.Open)/Stock.Open[1:length(Stock.Open)-1] # 等价于 Delt(Stock.Open)
+```
+
+## 位移k期
+
+* Lag(x, k): 向前偏移，相当于 dplyr::lag
+* Next(x, k): 向后偏移，相当于 dplyr::lead
+
+
+
+* xts::first(x, n): 取前 k 个值，相当于 head()；对时间序列对象来说，n 作为字符串，可以使用“日、周、月”等限定
+* xts::last(x, n)：取后 k 个值，相当于 tail()；对时间序列对象来说，n 作为字符串，可以使用“日、周、月”等限定，例如最近一个月这样的限定会比较有用
+
+```{r}
+Lag(Cl(SSEC), k = 1) %>% tail()
+Next(Cl(SSEC), k = 1) %>% tail()
+
+
+first(Cl(SSEC), n = 6)
+last(Cl(SSEC), n = 6)
+
+first(Cl(SSEC), n = )
+last(Cl(SSEC), n = "2 week")
+first(Cl(SSEC), '1 day')
+first(Cl(SSEC), '4 days')
+first(Cl(SSEC), 'month')
+last(Cl(SSEC), '2 months')
+last(Cl(SSEC), '6 weeks')
+```
+
+## 查找峰值和谷底
+
+```{r, echo=FALSE}
+findPeaks(SSEC)
+findPeaks(SSEC, thresh = 0)  %>% tail() 
+findValleys(SSEC)  %>% tail() 
+```
+
+```{r}
+last(SSEC, n = 10) 
+tail(SSEC, n = 10)
+```
+
+## Subsetting by Time and Date
+
+使用[]按日期格式来索引 `CCYY-MM-DD HH:MM:SS`(YYYY-MM-DD)，起始和结束中间用 `::`。
+
+```{r}
+SSEC["2016"]  %>% tail()  # 索引(筛选) 2016 一整年的（交易日）数据
+SSEC["2016-08-09::2016-08-19"]   %>% tail() # 索引两个交易日之间的所有数据
+```
+
+
+
+如何搭建量化投资研究系统？（工具篇之quantmod）
+http://www.kexuetouzi.com/?p=587

@@ -1,0 +1,283 @@
+## stringr 处理字符串向量
+
+### stringr
+
+`stringr` 是用来处理字符串向量的包，包含了 R 语言中绝大多数字符串处理功能，由 Hadley Wickham 开发。
+
+`stringr` 包中的的函数都是以 `str_` 开头。
+
+```{r}
+# 载入 stringr 包
+library(stringr)
+```
+
+### 基本字符处理函数
+
+有三个基本的字符处理函数，是与 base 包中功能相同，但在某些功能上略有增强，这里更多的是将其转为 `str_` 系列函数，使得整个字符处理在语法上更为统一。他们分别是：
+
+* `str_c()`, 等价于 `paste()`, 用于将字符串
+
+---
+
+[正则表达](http://zh.wikipedia.org/wiki/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F)
+
+[更多参考](http://blog.sina.com.cn/s/blog_69ffa1f90101sie9.html)
+
+
+
+```{r, eval=FALSE}
+
+
+# 转义符号 \\
+
+library(stringr)
+pattern <- "a.b"
+strings <- c("abb" , "a.b")
+
+#fixed
+str_detect(strings ,pattern) #pattern 被认为是正则表达式
+str_detect(strings ,fixed(pattern)) # fixed 只是匹配这个字符，不是正则
+
+
+#ignore.case #忽略大小写的影响
+stringr2 <- c("ABB" , "aaB" , "aab")
+str_detect(stringr2 , pattern) #默认的是对大小写敏感的
+str_detect(stringr2 , ignore.case(pattern)) #忽略大小写的敏感
+
+#invert_match #取出非pattern的对象的位置信息
+numbers <- "1 and 2 and 4 and 456"
+num_loc <- str_locate_all(numbers , "[0-9]+")[[1]] #返回所有数字的位置，开始的位置和结束的位置
+num_loc <- str_locate_all(numbers, "456")
+
+
+# subsub 
+# str_sub(string, start = 1L, end = -1L)
+str_sub(numbers , num_loc[ , "start"] , num_loc[ , "end"]) #从原字符串中把数字取出来
+
+hw <- "Hadley Wickham"
+
+str_sub(hw, 1, 6)
+str_sub(hw, end = 6)
+str_sub(hw, 8, 14)
+str_sub(hw, 8)
+str_sub(hw, c(1, 8), c(6, 14))
+
+str_sub(hw, -1) # 从最后一个往前推，第1个
+str_sub(hw, -7) # 从最后一个往前推，倒数第1个到第7个
+str_sub(hw, end = -7) # 在倒数第7个结束
+
+str_sub(hw, seq_len(str_length(hw)))
+str_sub(hw, end = seq_len(str_length(hw)))
+
+
+text_loc <- invert_match(num_loc)
+str_sub(numbers , text_loc[ , "start"] , text_loc[ , "end"])
+#从原字符串中把不是数字的对象取出来
+
+#str_c 将不同的字符串连接起来
+#str_join 同 str_c
+
+str_c("Letter:" , letters)
+paste0("Letter:" , letters)
+
+str_c("Letter" , letters , sep = ": ")
+paste("Letter" , sep = ": ", letters )
+str_c(letters , " is for" , "...")
+
+str_c(letters[-26] , " comes before " , letters[-1])
+str_c(letters  , collapse = "")
+str_c(letters  , collapse = ", ")
+
+#str_count 返回每个字符中有几个匹配字符
+fruit <- c("apple" , "banana" , "pear" , "pineapple")
+str_count(fruit ,"a")
+str_count(fruit ,"p")
+str_count(fruit ,c("a" , "p"))
+
+
+#str_detect 是否有匹配对象存在
+fruit <- c("apple" , "banana" , "pear" , "pineapple")
+str_detect(fruit , "a")
+str_detect(fruit , "^a")#以a开头的对象
+str_detect(fruit , "a$")#以a结尾的对象
+str_detect(fruit , "[aeiou]")
+str_detect("aecfg" , letters)
+
+#str_dup  将对象进行重复多次
+
+str_dup(fruit , 2) #所有的对象都重复2次
+str_dup(fruit , 1:4) #分别重复1-4次
+str_c("ba" , str_dup("na" , 0:5))
+
+#str_extract 提取出满足第一个匹配对象的字符
+shopping_list <- c("apples x4" , "flour" , "sugar" , "milk x2")
+str_extract(shopping_list , "\\d") #\\d表示数字，提取出所有对象中数字部分
+str_extract(shopping_list , "[0-9]+")#与上式相同
+
+str_extract(shopping_list , "[a-z]+") #取出所有纯字母部分
+
+str_extract_all(shopping_list , "[a-z]+") #取出所有纯字母部分
+
+str_extract(shopping_list , "[a-z]{1,4}")#取出所有纯字母字符的前四个字符
+str_extract(shopping_list , "\\b[a-z]{1,4}\\b") #取出纯字母长度为4的对象
+
+#str_extract_all 提取出所有满足匹配对象的字符
+str_extract_all(shopping_list , "[a-z]+") #列表形式返回
+str_extract_all(shopping_list , "\\b[a-z]+\\b")
+
+
+##str_length 计算每个对象的字符长度
+str_length(letters) #都是1
+nchar(letters)  #与上面结果一致
+str_length(c("i" , "like" , "programming" , NA)) #NA的长度还是NA
+
+##str_locate  返回字符第一处匹配模式的位置
+fruit <- c("apple" , "banana" , "pear" , "pineapple" )
+str_locate(fruit , "a") #虽然banana有很多a，但只返回第一个a的位置
+str_locate(fruit , "e") #如果字符没有匹配模式的地方，则返回NA
+str_locate(fruit , c("a","e" , "a" , "p"))
+
+
+##str_locate_all 在str_locate的基础上匹配所有的位置
+
+str_locate_all(fruit , "a") #以列表形式返回
+str_locate_all(fruit , c("a","e" , "a" , "p"))
+
+##str_match 一个字符只能匹配一次
+strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+            "387 287 6718", "apple", "233.398.9187 ", "482 952 3315",
+            "239 923 8115", "842 566 4692", "Work: 579-499-7527", "$1000",
+            "Home: 543.355.3679")
+phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+#解读phone，([2-9][0-9]{2})第一数字是2-9之间的，第二个数字是0-9之间的
+#{2}是说后面两个数字都是0-9之间的，[- .]表明中间的连接符是-后者空格
+#或者.都可以。后同
+str_extract(strings, phone) #提取出所有匹配模式的信息
+str_match(strings, phone)  #比str_extracte返回的更详细，有模式的每个部分的信息
+
+
+
+##str_match_all 同一个字符可以匹配所有满足模式的对象
+
+strings <- c("Home: 219 733 8965. Work: 229-293-8753 ",
+            "banana pear apple", "595 794 7569 / 387 287 6718")
+phone <- "([2-9][0-9]{2})[- .]([0-9]{3})[- .]([0-9]{4})"
+str_extract_all(strings, phone)
+str_match_all(strings, phone)
+
+##str_pad  填充一个字符
+#可以指定填充的位置
+rbind(
+ str_pad("hadley", 30, "left"),
+ str_pad("hadley", 30, "right"),
+ str_pad("hadley", 30, "both")
+)
+# Longer strings are returned unchanged
+#width参数可以指定返回字符串的长度，一旦width值小于字符串本身
+#长度，则完全返回字符串，反之则返回width长度的字符。
+str_pad("hadley", 3)
+str_pad("hadley", 8)
+#填空的物质默认为空格，也可以换成其他单字符
+str_pad("hadley", width = 20 ,pad ="0")
+
+#str_replace 替换字符第一个匹配模式的对象
+
+fruits <- c("one apple", "two pears", "three bananas")
+str_replace(fruits, "[aeiou]", "-") #每个字符中第一个的aeiou被替换为-
+
+str_replace_all(fruits, "[aeiou]", "-") #替换所有满足模式的对象
+str_replace(fruits, "([aeiou])", "") #
+str_replace(fruits, "([aeiou])", "\\1\\1")
+# \\1\\1是将对象复制一次，double
+str_replace(fruits, "([aeiou])", "\\1\\1\\1")
+# 复制三次
+str_replace(fruits, "[aeiou]", c("1", "2", "3"))
+str_replace(fruits, c("a", "e", "i"), "-")
+
+
+##str_split 以pattern为识别符，来拆分原字符
+#n是可以指定拆分成几部分
+#列表形式返回
+
+fruits <- c(
+ "apples and oranges and pears and bananas",
+ "pineapples and mangos and guavas"
+)
+str_split(fruits, " and ")
+# Specify n to restrict the number of possible matches
+str_split(fruits, " and ", n = 3)
+str_split(fruits, " and ", n = 2)
+# If n greater than number of pieces, no padding occurs
+str_split(fruits, " and ", n = 5)
+
+##str_split_fixed
+##以矩阵形式返回
+##参数n就是列数量（n列），结果不够n列，则用空字符替代
+fruits <- c(
+ "apples and oranges and pears and bananas",
+ "pineapples and mangos and guavas"
+)
+str_split_fixed(fruits, " and ", n = 3)
+str_split_fixed(fruits, " and ", n = 4)
+
+##str_sub 从字符向量中提取部分字符
+#参数start，默认为1，如果为负数，则从最后一个字符开始数
+#end也是，默认为最后一个字符
+hw <- "Hadley Wickham"
+str_sub(hw, 1, 6)
+str_sub(hw, end = 6)
+str_sub(hw, 8, 14)
+str_sub(hw, 8)
+str_sub(hw, c(1, 8), c(6, 14))
+str_sub(hw, -1) #start是最后一个字符，end默认的也是最后一个字符
+str_sub(hw, -7) #start是倒数第七个字符，end是最后一个字符，返回7个
+str_sub(hw, end = -7) #start默认为第一个字符，end为倒数第7个字符
+str_sub(hw, seq_len(str_length(hw)))
+str_sub(hw, end = seq_len(str_length(hw)))
+
+# 提取第一个字符
+full_name <- c("刘建国", "史芸", "欧阳真真")
+family_name <- str_sub(full_name, start = 1, end = 1)
+str_length(full_name)
+
+##str_sub_replace #将部分字符用一个字符向量替换
+#str_sub(string, start = 1L, end = -1L) <- value
+
+x <- "BBCDEF"
+str_sub(x, 1, 1) <- "A"; x
+str_sub(x, -1, -1) <- "K"; x
+str_sub(x, -2, -2) <- "GHIJ"; x
+str_sub(x, 2, -2) <- ""; x
+
+##str_trim 去除每个字符前后面的空白字符
+#str_pad是添加空白字符，而这个是去除
+str_trim(" String with trailing and leading white space\t")
+str_trim("\n\nString with trailing and leading white space\n\n")
+
+##str_wrap 设置字符串的格式
+thanks_path <- file.path(R.home("doc"), "THANKS")
+thanks <- str_c(readLines(thanks_path), collapse = "\n") #一行一个换行
+thanks <- word(thanks, 1, 3, fixed("\n\n"))
+cat(str_wrap(thanks), "\n")
+cat(str_wrap(thanks, width = 40), "\n") #每行有40个字符
+cat(str_wrap(thanks, width = 60, indent = 2), "\n") #每行有60个
+#字符，且首行缩进2个字符
+cat(str_wrap(thanks, width = 60, exdent = 2), "\n")
+#每行60个字符，且除了首行，其他行都缩进2个字符
+
+##word:从一个句子中提出单词
+#word(string, start = 1L, end = start, sep = fixed(" "))
+sentences <- c("Jane saw a cat", "Jane sat down")
+word(sentences, 1) #提出第一个单词
+word(sentences, 2) #提取第二个单词
+word(sentences, -1) #提取最后一个单词
+word(sentences, 2, -1) #提取第2个单词到最后一个单词
+# Also vectorised over start and end
+word(sentences[1], 1:3, -1)
+word(sentences[1], 1, 1:4)
+
+# Can define words by other separators
+str <-'abc.def..123.4568.999'
+word(str, 1, sep = fixed('..')) #满足fixed前面的对象
+word(str, 2, sep = fixed('..'))#后面的对象
+```

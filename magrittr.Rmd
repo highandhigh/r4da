@@ -1,0 +1,200 @@
+
+## magrittr 管道操作符：流式编程
+
+### magrittr介绍
+
+`magrittr`包被定义为一个高效的管道操作工具包，通过管道的连接方式，让数据或表达式的传递更高效，使用操作符`%>%`，可以直接把数据传递给下一个函数调用。
+
+`magrittr`包有两个主要目标:
+
+* 第一是减少代码开发时间，提高代码的可读性和维护性
+* 第二是让你的代码更短
+
+magrittr包，主要定义了4个管道操作符，分别是:
+
+* `%>%`, Forward pipe operator，向右操作符，主操作符
+
+> 将左边的结果传递给右边的函数作为第一个参数值，其结果可以继续又右边传递
+
+* `%T>%`，Tee operations，向左操作符
+
+> 与`%>%`的区别是其结果不能向右传递，继续向右传递的是`%T>%`左边的结果，`%T>%`通常用来输出图形、打印结果到屏幕或者输出到文件，然后继续`%>%`操作
+
+* `%$%` ，Pipe with exposition of variables，解释操作符
+
+> 通常左边是数据框，`%$%` 之后右边函数可直接通过使用该数据框的变量
+
+* `%<>%`，Compound assignment pipe operations，复合赋值管道操作符
+
+> 只能出现在最左边的对象之后，用于在一长串处理管道操作之后直接赋值到最左边的对象上
+
+
+`magrittr`的项目主页： <https://github.com/smbache/magrittr>
+
+
+### 管道操作符
+
+#### %>% 和 %T%
+
+```{r, eval=FALSE}
+install.packages("magrittr") # 第一次使用前先从 CRAN 安装 magrittr 包
+```
+
+```{r}
+library(magrittr) # 使用前载入 magrittr 包
+```
+
+`%>%` 主管道操作符的基本用法：x 是一个数据对象, f(data, p = value) 是一个函数
+
+* x %>% f() 等价于 f(x)
+* x %>% f(p = value) 等价于 f(data = x, p = value)
+* x %>% f(p = .) 等价于 f(data = x, p = x) ；这里的 `.` 代表从左边传递过来的对象（没有名字故而使用`.`替代）[这个说法不太严谨，暂且先这么用]
+* x %>% f1() %>% f2() 等价于 f2(f1(x)) 
+
+*** 
+
+`%T>%` 操作符的基本用法：
+
+* x %T>% f() 等价于 f(x)
+* x %T>% f1() %>% f2() 等价于 f1(x); f2(x)
+
+*** 
+
+如果只是做一次管道传递是没必要定义这样特殊操作符的，通常情况下是一连串的管道操作才其优势。
+
+这里对员工数据集中出生日期向量做操作案例，目的是筛选出在1900年后出生的员工，并计算这些人出生年份的中位数。
+
+这里先将出生日期按照字符串处理，而不是用日期函数来直接提取，使得多几个操作步骤，以显示管道操作符的便捷性。
+
+
+```{r, echo=FALSE}
+birthday <- as.Date(c("1984-02-28", "1988-09-26", "1989-07-28", "1990-01-25", "1987-04-30",
+                      "1989-12-20", "1992-06-14", "1991-07-01", "1990-08-08", "1985-05-10",
+                      "1993-04-01", "1991-03-05", "1991-09-25", "1992-01-31", "1988-02-14"))
+name <- c("宋子启", "张伯仲", "孟轲舆", "张伟", "王雪梅", "陈梦妍", "李元礼", "杨伯侨", "赵蜚廉", "蒋欣", "沈约度", "陈淮阳", "况天佑", "王珍珍", "马小玲")
+# save(height, file = "height.RData")
+load(file = "height.RData")
+
+# save(employee, file = "employee.RData")
+
+load(file = "employee.RData")
+
+```
+
+```{r}
+birthday %>% 
+  as.character() %>% # 先将 Date 类转化为字符型
+  substr(1, 4) %>% # 提取字符串，从第1个字符到第4个字符，年份
+  as.integer() %>% # 将出生年份字符转化为整数型
+  set_names(name) %>% # 将员工名字赋值给生年份的结果向量
+  subset(. >= 1990) %T>% # 使用 . 代表从左边传递过来的对象
+  print() %>% # %T>% 之后操作结果不作为下一个操作符的结果
+  median # 当一个函数没有其他参数时可省略函数的括号
+```  
+
+其中 `set_names` 是 `magrittr` 中的函数，set_names(x, name) 等价于 names(x) <- name。这里将其定位为f(x, p = value) 的形式，便于在管道符操作中使用函数。 
+
+
+上面出生年份的示例，如果不使用管道操作符，有两种传统写法，分别如下：
+
+分步顺序操作，使用临时变量
+```{r}
+temp <- as.character(birthday)
+temp <- substr(temp, 1, 4)
+temp <- as.integer(temp)
+names(temp) <- name # 或者 magrittr 中的函数 set_names(temp, name) 
+temp <- subset(temp, temp >= 1990)
+print(temp)
+median(temp)
+```
+
+函数嵌套
+```{r}
+temp <- set_names(as.integer(substr(as.character(birthday), 1, 4)), name)
+temp <- subset(temp, temp >= 1990) # subset 中用到了两次同一个变量，这里用一个中间临时变量还方便些
+print(temp) # print 和 meian 两次不同的输出，还得使用一次中间变量
+median(temp)
+```
+
+分步操作中需要多次书写同一个变量名称，较为繁琐；过多的函数嵌套时，不便于理解操作步骤且容易输错。
+
+管道操作符使得程序逻辑更为通顺便于理解，减少中间结果的重复输入。
+
+代码最佳书写风格是，在每个管道操作符后换行，便于执行选择前半部分操作执行结果，或者注释中间操作。
+
+#### %$% 
+
+管道操作符对所有数据对象有效，而不仅仅是向量，我们来看数据框计算的例子。
+
+使用 employee 数据集，做 subset 子集筛选，和直接用其中的变量作图和计算
+
+```{r}
+employee %>%
+  subset(gender == "男") %$% #筛选男性
+  plot(weight, height) # %$% 之后可直接使用data.frame中的variables，做散点图
+
+employee %>%
+  subset(islocal = TRUE) %$% #筛选本地
+  cor(weight, height) # %$% 之后可直接使用数据框中的变量，计算相关系数
+```
+
+#### %<>% 
+
+有时候我们需要将管道操作后最后的结果赋值给最初的对象以更新其结果，这时可以用`%<>%`操作符。
+
+建议，在最初的时候还是使用`%>%`操作符，在确认最终的结果正确后需要该写初始对象，则再修改第一个操作符为`%<>%`。
+
+```{r}
+temp <- seq(1:10)
+print(temp)
+temp %<>% # 将管道操作最后一个结果返回给最开始的 temp
+  sqrt %>%
+  log # 最后的结果重新复制给 temp；等价于 log 之后的结果 -> temp
+print(temp) # 验证 temp 是否已经改变
+```
+
+### 运算符号的通用函数
+
+在管道操作中间过程，有时会用到一些算术符号运算，在 maggrittr 中做一些常用的运算符号定义为通用函数，使其可以像普通函数那样调用，且支持直接使用操作符，但需要用特殊符号将其标记。
+
+```{r}
+# 将身高数值从单位为米转化为厘米，并包含“厘米”转化字符串输出
+height %>% `*` (100) %>% paste0(sep = "厘米") 
+height %>% multiply_by(100) %>% paste0(sep = "厘米") # multiply_by 是 `*` 乘法符号的函数写法
+```
+
+
+通用函数和操作符号一栏表
+
+函数 | 操作符
+-----|----
+extract	|                  `[`
+multiply_by	|          `*`
+extract2	  |        `[[`
+inset	   |               `[<-`
+inset2	 |                 `[[<-`
+use_series	 |         `$`
+add	   |               `+`
+subtract	 |         `-`
+multiply_by	  |        `*`
+raise_to_power	  |        `^`
+multiply_by_matrix	|  `%*%`
+divide_by	   |       `/`
+divide_by_int	 |         `%/%`
+mod	    |              `%%`
+is_in	 |                 `%in%`
+and	  |                `&`
+or	  |                `|`
+equals	  |                `==`
+is_greater_than	   |       `>`
+is_weakly_greater_than|	  `>=`
+is_less_than	   |       `<`
+is_weakly_less_than	|  `<=`
+not (`n'est pas`)	|  `!`
+set_colnames	|          `colnames<-`
+set_rownames	|          `rownames<-`
+set_names	   |       `names<-`
+
+***
+
+在后续章节的综合数据处理过程中，将会大量使用到 magrittr 中管道操作符，有需要特别指出的时候会做做进一步说明。
