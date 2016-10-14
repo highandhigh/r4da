@@ -1,5 +1,11 @@
 ## 数据模式、类型与对象的类辨析
 
+mode, typeof, class 的区别
+
+[知乎：R语言中，mode(模式)和class(类)有何区别？](https://www.zhihu.com/question/38561993)
+
+[LFGxiaogang的博客：R语言：mode和class的区别](http://blog.csdn.net/lfgxiaogang/article/details/52493571)
+
 ### 数据模式、类型
 
 ### 对象的类
