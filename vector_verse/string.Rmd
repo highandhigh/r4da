@@ -1,0 +1,162 @@
+---
+title: "string.Rmd"
+author: "lxh"
+date: "2016年12月5日"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### base R 基础包中常用的字符处理函数
+
+
+统计字符个数
+
+```{r}
+x <- c("abcd", "R语言", "数据分析")
+nchar(x) # 默认 type = "chars" # 人类可读的字符数
+nchar(x, type = "bytes") # 字节数（机器可读）
+```
+
+连接字符串
+
+```{r}
+paste("abcd", "efg", "xyz", sep = ",") # sep 是连接符号
+paste0("abcd","xyz") # paste0 是 paste 的快捷函数，等价于 sep = ""
+```
+
+将字符向量中的每个元素收尾相连
+```{r}
+(nth <- paste0(1:12, c("st", "nd", "rd", rep("th", 9))))
+paste(nth, collapse = ", ")
+```
+
+截取字符子窜
+```{r}
+(x <- c("abcdefg", "uvwxyz"))
+substr(x, 2, 5) # substr(x, start, stop)
+substring(x, 1:2, c(3, 5)) # 起始和结束使用位置向量
+```
+
+
+字符串拆分为向量（与“将字符向量中的每个元素收尾相连”相反）
+
+`strsplit(x, split, fixed = FALSE, perl = FALSE, useBytes = FALSE)`
+
+* `split` 是用来拆分的字符，默认是使用正则表达式，除非 `fixed` 设置为 `TRUE`
+
+`strsplit()`返回的是`列表`，因为一个字符串（一个字符向量元素）可能包含多个用来拆分的字符，每个字符元素将会返回一个字符向量，而每个字符向量的长度可能不太一样。
+
+
+```{r}
+(x <- c(as = "asfef", qu = "qwerty", "yuiop[", "b", "stuff.blah.yech"))
+strsplit(x, "e") # 用字符 "e" 来拆分字符串
+
+strsplit("a.b.c", ".", fixed = TRUE) # 将 "." 作为非正则符号来使用 
+```
+
+
+
+### Regular Expressions 正则表达式在R用的使用
+
+关于正则表达式可参考 http://stringr.tidyverse.org/articles/regular-expressions.html stringr 中的介绍文档，案例也使用该包中的函数。
+
+```{r}
+library(stringr)
+```
+
+匹配普通字符
+
+```{r}
+x <- c("apple", "banana", "pear")
+str_extract(x, "an")
+```
+
+匹配字符大小写敏感
+```{r}
+bananas <- c("banana", "Banana", "BANANA")
+str_detect(bananas, "banana") # 默认是大小写敏感的
+str_detect(bananas, regex("banana", ignore_case = TRUE)) #　可以在正则表达式中关闭大小写敏感
+```
+
+转义符号
+
+通常情况下，正则表达式中的转义符号"\"；在 R 语言的正则表达式中匹配模式中，需要使用“\\”来转义。
+
+```{r}
+str_extract(c("abc", "a.c", "bef"), "a\\.c") # 转义后"."就只代表该字符本身而没任意字符的特殊含义
+```
+
+常用的特殊字符
+
+* `\n` 换行符
+* `\r` 回车符
+* `\t` 制表符
+
+
+匹配一个任意字符 
+
+```{r}
+str_extract(c("abc", "1.c", "\n"), ".") # "." 匹配一个任意字符 
+```
+
+```{r}
+str_extract(c("1abc", "2a.c", "bef"), "\\d") # "\d" 匹配一个任意数字 
+str_extract(c("1abc", "2a.c", "bef"), "[0-9]") # "[0-9]"是匹配0到9数字中的一个， 与 "\d" 匹配任意一个数字等价
+str_extract(c("1abc", "2a.c", "bef"), "\\D") # "\D" 匹配一个任意非数字 
+```
+
+```{r}
+str_extract(c("1abc", ",a.c", "bef"), "\\w") # "\w" 匹配一个任意字母、标点符号、数字 
+str_extract(c("1abc", "2f.c", "Bef"), "[a-zA-Z]") # "[a-z]"是匹配从a-z的26个小写字母， [A-Z]"是匹配从A-Z的26个大写字母
+str_extract(c("1abc", ".fc", "bef"), "[abc]") # "[abc]" 匹配从“a","b","c"的中任意一个字符
+str_extract(c("1abc", ".fc", "bef"), "[^abc]") # "[^abc]" 匹配非“a","b","c"的中任意一个字符
+```
+
+```{r}
+str_extract(c("1a bc", "2\tc", "3b\nf", "w\rd", "tt\fd"), "\\s") # "\s" 匹配一个空白符，包含 空格 换行符 回车符 制表符等
+str_extract(c("1a bc", "2\tc", "3b\nf", "w\rd", "tt\fd"), "\\S") # "\S" 匹配非空白符
+```
+
+预定义的字符匹配（非正则表达式）
+
+* `[:punct:]:` punctuation. 标点符号
+* `[:alpha:]:` letters. 字母，包含大小写
+* `[:lower:]:` lowercase letters. 小写字母
+* `[:upper:]:` upperclass letters. 大写字母
+* `[:digit:]:` digits. 数字
+* `[:xdigit:]:` hex digits. 十六进制数字
+* `[:alnum:]:` letters and numbers. 字母和数字
+* `[:cntrl:]:` control characters. 控制字符
+* `[:graph:]:` letters, numbers, and punctuation. 字母，数字，标点符号
+* `[:print:]:` letters, numbers, punctuation, and whitespace. 字母，数字，表达符号和空白符号
+* `[:space:]:` space characters (basically equivalent to \s). 空白
+* `[:blank:]:` space and tab. 空格和制表符
+
+
+```{r}
+str_extract(c("1abc", ",a.c", "Bef"), "[:alpha:]") # "\s" 匹配一个空白符，包含 空格 换行符 回车符 制表符等
+```
+
+
+交替与分组
+
+`|` 交替是逻辑`或`条件，`()`分组是表达式优先级
+```{r}
+str_extract(c("1abc", ",a.c", "Bef"), "1|a") # "1|a" 匹配 “1”或者“a”中任意一个字符
+```
+
+```{r}
+str_extract(c("abc", "a1c", "E1c"), "a(1|b)c") # "a(1|b)c" 匹配 三个字符，开通是“a”，结尾是”c",中间是“1”或者“b”
+```
+
+定位符
+
+`^`以什么开头（放在要匹配的字符之前），`$`以什么结尾（放在匹配字符之后）。
+
+```{r}
+str_extract(c("abc", "cba"), "^a") # "^a" 匹配以"a"作为开头的字符
+str_extract(c("abc", "cba"), "a$") # "$a" 匹配以"a"作为结尾的字符
+```
