@@ -3,6 +3,7 @@ library(mlr)
 library(purrr)
 library(dplyr)
 library(magrittr)
+library(parallelMap)
 
 ## Load data
 data(Sonar, package = "mlbench")
@@ -27,31 +28,27 @@ task
 # 111  97 
 # Positive class: M
 
-## Load the learners
-source("classification/classif_learners.R", echo = TRUE, encoding = "UTF-8")
-# map(twoclass_learners, makeLearner)
-# map(multiclass_learners, makeLearner)
+## List the learners
 
-# for (i in twoclass_learners) {
-#   if (i %in% multiclass_learners) print(i)
-# }
-#   
 
-## Learners to be compared
-## lrns <- map(c(twoclass_learners,multiclass_learners), makeLearner)
+nlrns <- c("classif.bartMachine", "classif.boosting", "classif.extraTrees")
 
 lrns <- task %>% 
   listLearners %>% 
-  filter(class != "classif.xgboost") %>% # 错误: 'predict' is not an exported object from 'namespace:xgboost'
+  filter(!class %in% nlrns) %>%
   use_series(class) %>% 
   map(makeLearner)
+
+parallelStartMulticore(cpus = parallel::detectCores() - 1, level = "mlr.resample")
 
 ## Specify the resampling strategy (10-fold cross-validation)
 rdesc <- makeResampleDesc("CV", iters = 10)
 
 ## Conduct the benchmark experiment
-bmr <- benchmark(lrns, task, rdesc, measures = list(mmce, timeboth))
+bmr <- benchmark(lrns, task, rdesc, measures = list(acc, timetrain))
 
+
+parallelStop()
 
 ## Accessing benchmark results
 bmr_res <- getBMRAggrPerformances(bmr)
@@ -67,18 +64,3 @@ tibble(learner = names(bmr_res$Sonar),
   ggplot(aes(x = timeboth.test.mean, y = mmce.test.mean, color = factor(learner))) +
   geom_point() +
   guides(color = FALSE)
-
-
-# A tibble: 66 × 3
-# learner mmce.test.mean timeboth.test.mean
-# <chr>          <dbl>              <dbl>
-# 1          classif.extraTrees   0.1204761905             0.1177
-# 2                classif.rknn   0.1245238095             0.1612
-# 3            classif.boosting   0.1250000000            20.1639
-# 4  classif.randomForestSRCSyn   0.1438095238            20.8026
-# 5                classif.kknn   0.1440476190             0.0168
-# 6                 classif.svm   0.1535714286             0.0248
-# 7               classif.dcSVM   0.1535714286             0.0273
-# 8        classif.randomForest   0.1540476190             0.2191
-# 9         classif.bartMachine   0.1588095238             1.6516
-# 10             classif.avNNet   0.1638095238             0.1909
