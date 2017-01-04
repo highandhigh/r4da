@@ -61,8 +61,10 @@ tibble(learner = names(bmr_res$Sonar),
 ) %>% 
   arrange(desc(acc.test.mean), timetrain.test.mean) %T>%
   print() %>%
-  # filter(timeboth.test.mean < 5, mmce.test.mean < 0.3) %>%
   ggplot(aes(x = acc.test.mean, y = fct_rev(fct_inorder(learner)))) +
   geom_point() +
-  xlim(0.7, 0.85) +
-  guides(color = FALSE)
+  scale_x_continuous(name = "Predictive accuracy", limits = c(0.5, 1)) +
+  ylab("Classif learners") +
+  labs(title = paste0(getTaskId(task), " ", getTaskType(task)), 
+       subtitle = paste0(getTaskSize(task), " observations, ", 
+                         getTaskNFeats(task), " features."))
