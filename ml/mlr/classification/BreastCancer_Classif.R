@@ -1,5 +1,6 @@
 ## Load packages
 library(mlr)
+library(parallelMap)
 library(purrr)
 library(dplyr)
 library(magrittr)
