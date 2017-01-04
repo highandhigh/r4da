@@ -1,9 +1,9 @@
 ## Load packages
 library(mlr)
+library(parallelMap)
 library(purrr)
 library(dplyr)
 library(magrittr)
-library(parallelMap)
 library(forcats)
 
 
@@ -27,7 +27,7 @@ library(forcats)
 
 
 ## Load data
-car <- fread("http://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data")
+car <- data.table::fread("http://archive.ics.uci.edu/ml/machine-learning-databases/car/car.data")
 names(car) <- c("buying", "maint", "doors", "persons", "lug_boot", "safety", "class")
 
 car$class <- factor(car$class, levels = c("unacc", "acc", "good", "vgood"), ordered = FALSE)
