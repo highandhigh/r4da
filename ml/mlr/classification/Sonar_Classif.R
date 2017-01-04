@@ -4,6 +4,7 @@ library(purrr)
 library(dplyr)
 library(magrittr)
 library(parallelMap)
+library(forcats)
 
 ## Load data
 data(Sonar, package = "mlbench")
@@ -31,7 +32,7 @@ task
 ## List the learners
 
 
-nlrns <- c("classif.bartMachine", "classif.boosting", "classif.extraTrees")
+nlrns <- c("classif.bartMachine", "classif.boosting", "classif.extraTrees", "classif.xgboost")
 
 lrns <- task %>% 
   listLearners %>% 
@@ -55,12 +56,13 @@ bmr_res <- getBMRAggrPerformances(bmr)
 
 ## Print & Plot
 tibble(learner = names(bmr_res$Sonar), 
-       mmce.test.mean = map_dbl(bmr_res$Sonar, "mmce.test.mean"), 
-       timeboth.test.mean = map_dbl(bmr_res$Sonar, "timeboth.test.mean")
+       acc.test.mean = map_dbl(bmr_res$Sonar, "acc.test.mean"), 
+       timetrain.test.mean = map_dbl(bmr_res$Sonar, "timetrain.test.mean")
 ) %>% 
-  arrange(mmce.test.mean, timeboth.test.mean) %T>%
+  arrange(desc(acc.test.mean), timetrain.test.mean) %T>%
   print() %>%
-  filter(timeboth.test.mean < 5, mmce.test.mean < 0.3) %>%
-  ggplot(aes(x = timeboth.test.mean, y = mmce.test.mean, color = factor(learner))) +
+  # filter(timeboth.test.mean < 5, mmce.test.mean < 0.3) %>%
+  ggplot(aes(x = acc.test.mean, y = fct_rev(fct_inorder(learner)))) +
   geom_point() +
+  xlim(0.7, 0.85) +
   guides(color = FALSE)
