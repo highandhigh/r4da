@@ -30,26 +30,43 @@ task
 # Positive class: M
 
 ## List the learners
-
-
-nlrns <- c("classif.bartMachine", "classif.boosting", "classif.extraTrees", "classif.xgboost")
-
-lrns <- task %>% 
-  listLearners %>% 
-  filter(!class %in% nlrns) %>%
-  use_series(class) %>% 
+lrns <- task %>%
+  listLearners() %>% 
+  filter(!package %in% c("h2o", "RWeka", "bartMachine")) %>%
+  filter(!class %in% c("classif.bartMachine", "classif.boosting", "classif.extraTrees", "classif.xgboost")) %>%
+  use_series(class) %T>% 
+  print() %>%
   map(makeLearner)
 
-parallelStartMulticore(cpus = parallel::detectCores() - 1, level = "mlr.resample")
-
-## Specify the resampling strategy (10-fold cross-validation)
+## Resample 
 rdesc <- makeResampleDesc("CV", iters = 10)
 
+ptm1 <- proc.time()
+
+## Start parallel
+parallelStartMulticore(cpus = parallel::detectCores() - 1, level = "mlr.benchmark") # elapsed = 251.754
+# user  system elapsed 
+# 438.368  50.520 255.478 
+
+# parallelStartMulticore(cpus = parallel::detectCores() - 1, level = "mlr.resample") # elapsed = 121.745 
+# user  system elapsed 
+# 901.396 232.264 121.745 
+
+
+
+profvis({
 ## Conduct the benchmark experiment
-bmr <- benchmark(lrns, task, rdesc, measures = list(acc, timetrain))
+bmr <- benchmark(lrns, task, rdesc, measures = list(acc, timetrain), keep.pred = FALSE, models = FALSE)
+})
 
 
+
+## Stop parallel
 parallelStop()
+
+ptm2 <- proc.time()
+ptm2 - ptm1
+
 
 ## Accessing benchmark results
 bmr_res <- getBMRAggrPerformances(bmr)
@@ -61,10 +78,8 @@ tibble(learner = names(bmr_res$Sonar),
 ) %>% 
   arrange(desc(acc.test.mean), timetrain.test.mean) %T>%
   print() %>%
+  # filter(timeboth.test.mean < 5, mmce.test.mean < 0.3) %>%
   ggplot(aes(x = acc.test.mean, y = fct_rev(fct_inorder(learner)))) +
   geom_point() +
-  scale_x_continuous(name = "Predictive accuracy", limits = c(0.5, 1)) +
-  ylab("Classif learners") +
-  labs(title = paste0(getTaskId(task), " ", getTaskType(task)), 
-       subtitle = paste0(getTaskSize(task), " observations, ", 
-                         getTaskNFeats(task), " features."))
+  xlim(0.7, 0.85) +
+  guides(color = FALSE)
