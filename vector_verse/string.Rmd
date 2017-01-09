@@ -164,6 +164,9 @@ str_extract(c("abc", "cba"), "a$") # "$a" 匹配以"a"作为结尾的字符
 
 ### 正则表达式
 
+http://mp.weixin.qq.com/s/Jx0RF4UukEYB0ImPxE2eMA
+
+
 | pattern | 含义 |
 | ------------- |-------------|
 [\b] | 回退（并删除）一个字符（backspace） |
