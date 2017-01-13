@@ -1,0 +1,40 @@
+---
+title: "datasets"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(magrittr)
+library(stringr)
+```
+
+## 内置数据集 datasets
+
+`datasets`包是默认载入的，故而其数据集可直接通过调用名字。
+
+
+```{r datasets}
+data(package = "datasets") %>%
+  use_series(result) %>%
+  as_tibble() %>%
+  # select(Item, Title) %>%
+  use_series(Item) %>% 
+  str_replace_all(" (.*)", "") %>%
+  mget(envir = as.environment("package:datasets")) %>%
+  map(class)
+```
+
+### 向量
+
+
+
+```{r vector}
+LETTERS    #26个大写字母
+letters    #26个小写字母
+month.abb    #12个月份的三字母缩写
+month.name    #12个月份的全称
+pi    #3.14...
+```
+
