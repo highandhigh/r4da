@@ -16,7 +16,12 @@ library(stringr)
 
 
 ```{r datasets}
-data(package = "datasets") %>%
+
+library(tidyverse)
+library(magrittr)
+library(stringr)
+
+data_class <- data(package = "datasets") %>%
   use_series(result) %>%
   as_tibble() %>%
   # select(Item, Title) %>%
@@ -24,11 +29,37 @@ data(package = "datasets") %>%
   str_replace_all(" (.*)", "") %>%
   mget(envir = as.environment("package:datasets")) %>%
   map(class)
+
+m_name <- unique(names(data_class))
+
+m_class <- unique(unlist(data_class))
+
+t1 <- data_class %>% map(match, m_class) %>% unlist()
+
+data_class %>% map(length) %>% 
+
+for(n in 1:104) {
+  i <- n
+  j <- match(data_class[[n]], m_class)
+  if(length(i) != length(j)) i <- rep(i, length(j))
+  # print(i)
+  # print(j)
+  if(n == 1) {
+    x <- i
+    y <- j
+    } else {
+      x <- c(x, i)
+      y <- c(y, j)
+    }
+}
+
+(D <- sparseMatrix(i = x, j = y, x = 1, dimnames = list(m_name, m_class)))
+summary(D)
+str(D) # note that *internally* 0-based row indices are used
+
 ```
 
 ### 向量
-
-
 
 ```{r vector}
 LETTERS    #26个大写字母
